@@ -1,8 +1,16 @@
+/* Contenedor del widget: ancho completo y visible dentro del form de Odoo 16 */
+.o_df_odontogram_field {
+    width: 100%;
+    min-width: 0;
+    display: block;
+}
+
 .o_df_odontogram_root {
     display: grid;
-    grid-template-columns: minmax(700px, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) 320px;
     gap: 16px;
     align-items: start;
+    min-height: 420px;
 }
 
 .o_df_odontogram_board,
@@ -11,6 +19,10 @@
     border: 1px solid #d9d9d9;
     border-radius: 8px;
     padding: 16px;
+}
+
+.o_df_odontogram_board {
+    min-width: 0; /* permite que el grid reduzca dentro del contenedor */
 }
 
 .o_df_section_title {

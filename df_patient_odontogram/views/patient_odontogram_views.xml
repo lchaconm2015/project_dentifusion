@@ -34,7 +34,9 @@
                     </group>
 
                     <separator string="Odontograma visual"/>
-                    <field name="chart_data" widget="df_odontogram" nolabel="1"/>
+                    <group colspan="2" class="o_form_content_fullwidth">
+                        <field name="chart_data" widget="df_odontogram" nolabel="1"/>
+                    </group>
 
                     <separator string="Detalle técnico por pieza"/>
                     <field name="line_ids">

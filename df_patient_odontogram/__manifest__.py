@@ -13,9 +13,9 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "df_patient_odontogram/static/src/js/odontogram_field.js",
             "df_patient_odontogram/static/src/xml/odontogram_field.xml",
-            "df_patient_odontogram/static/src/scss/odontogram.scss"
+            "df_patient_odontogram/static/src/scss/odontogram.scss",
+            "df_patient_odontogram/static/src/js/odontogram_field.js"
         ]
     },
     "installable": True,
