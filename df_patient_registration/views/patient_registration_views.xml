@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_patient_registration_tree" model="ir.ui.view">
+        <field name="name">df.patient.registration.tree</field>
+        <field name="model">df.patient.registration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name"/>
+                <field name="institution_system"/>
+                <field name="unicodigo"/>
+                <field name="sex"/>
+                <field name="age"/>
+                <field name="sheet_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_df_patient_registration_form" model="ir.ui.view">
+        <field name="name">df.patient.registration.form</field>
+        <field name="model">df.patient.registration</field>
+        <field name="arch" type="xml">
+            <form string="Registro de Paciente">
+                <sheet>
+                    <group string="A. Datos del establecimiento y usuario / paciente">
+                        <group>
+                            <field name="institution_system"/>
+                            <field name="unicodigo"/>
+                            <field name="health_establishment"/>
+                            <field name="unique_clinical_history_number"/>
+                            <field name="file_number"/>
+                            <field name="sheet_number"/>
+                        </group>
+                        <group>
+                            <field name="first_lastname"/>
+                            <field name="second_lastname"/>
+                            <field name="first_name"/>
+                            <field name="second_name"/>
+                            <field name="sex"/>
+                            <field name="age"/>
+                            <field name="age_condition"/>
+                        </group>
+                    </group>
+
+                    <group string="B. Motivo de consulta">
+                        <group>
+                            <field name="consultation_reason"/>
+                            <field name="pregnant"/>
+                        </group>
+                    </group>
+
+                    <group string="C. Enfermedad actual">
+                        <field name="current_illness"/>
+                    </group>
+
+                    <group string="D. Antecedentes patológicos personales">
+                        <group col="4">
+                            <field name="personal_antibiotic_allergy"/>
+                            <field name="personal_anesthesia_allergy"/>
+                            <field name="personal_hemorrhages"/>
+                            <field name="personal_hiv_aids"/>
+                            <field name="personal_tuberculosis"/>
+                            <field name="personal_asthma"/>
+                            <field name="personal_diabetes"/>
+                            <field name="personal_hypertension"/>
+                            <field name="personal_heart_disease"/>
+                            <field name="personal_other"/>
+                        </group>
+                        <field name="personal_background_notes"/>
+                    </group>
+
+                    <group string="E. Antecedentes patológicos familiares">
+                        <group col="4">
+                            <field name="family_cardiopathy"/>
+                            <field name="family_hypertension"/>
+                            <field name="family_vascular_disease"/>
+                            <field name="family_endocrine_metabolic"/>
+                            <field name="family_cancer"/>
+                            <field name="family_tuberculosis"/>
+                            <field name="family_mental_illness"/>
+                            <field name="family_infectious_disease"/>
+                            <field name="family_malformation"/>
+                            <field name="family_other"/>
+                        </group>
+                        <field name="family_background_notes"/>
+                    </group>
+
+                    <group string="F. Constantes vitales">
+                        <group>
+                            <field name="temperature"/>
+                            <field name="pulse"/>
+                        </group>
+                        <group>
+                            <field name="respiratory_rate"/>
+                            <field name="blood_pressure"/>
+                        </group>
+                    </group>
+
+                    <group string="G. Examen del sistema estomatognático">
+                        <group>
+                            <field name="exam_lips"/>
+                            <field name="exam_cheeks"/>
+                            <field name="exam_upper_jaw"/>
+                            <field name="exam_lower_jaw"/>
+                            <field name="exam_tongue"/>
+                            <field name="exam_palate"/>
+                            <field name="exam_floor_of_mouth"/>
+                        </group>
+                        <group>
+                            <field name="exam_cheeks_inner"/>
+                            <field name="exam_salivary_glands"/>
+                            <field name="exam_oropharynx"/>
+                            <field name="exam_atm"/>
+                            <field name="exam_ganglia"/>
+                            <field name="exam_others"/>
+                        </group>
+                        <field name="affected_region_description"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_patient_registration_search" model="ir.ui.view">
+        <field name="name">df.patient.registration.search</field>
+        <field name="model">df.patient.registration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="display_name"/>
+                <field name="first_name"/>
+                <field name="first_lastname"/>
+                <field name="unicodigo"/>
+                <filter name="filter_active" string="Activos" domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_df_patient_registration" model="ir.actions.act_window">
+        <field name="name">Pacientes</field>
+        <field name="res_model">df.patient.registration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_df_patient_registration_search"/>
+    </record>
+
+    <menuitem id="menu_df_patient_root" name="Clínica"/>
+    <menuitem id="menu_df_patient_registration" name="Pacientes" parent="menu_df_patient_root" action="action_df_patient_registration"/>
+</odoo>
