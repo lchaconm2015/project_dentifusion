@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_patient_odontogram_tree" model="ir.ui.view">
+        <field name="name">df.patient.odontogram.tree</field>
+        <field name="model">df.patient.odontogram</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name"/>
+                <field name="patient_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_df_patient_odontogram_form" model="ir.ui.view">
+        <field name="name">df.patient.odontogram.form</field>
+        <field name="model">df.patient.odontogram</field>
+        <field name="arch" type="xml">
+            <form string="Odontograma">
+                <header>
+                    <button name="action_generate_default_chart" type="object" string="Generar base" class="btn-secondary"/>
+                    <button name="action_sync_lines_from_chart" type="object" string="Sincronizar a líneas" class="btn-primary"/>
+                    <button name="action_load_chart_from_lines" type="object" string="Cargar desde líneas" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+
+                    <separator string="Odontograma visual"/>
+                    <field name="chart_data" widget="df_odontogram" nolabel="1"/>
+
+                    <separator string="Detalle técnico por pieza"/>
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="tooth_code"/>
+                            <field name="status"/>
+                            <field name="mobility"/>
+                            <field name="recession"/>
+                            <field name="notes"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_patient_odontogram_search" model="ir.ui.view">
+        <field name="name">df.patient.odontogram.search</field>
+        <field name="model">df.patient.odontogram</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="patient_id"/>
+                <field name="display_name"/>
+                <filter name="filter_active" string="Activos" domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_df_patient_odontogram" model="ir.actions.act_window">
+        <field name="name">Odontogramas</field>
+        <field name="res_model">df.patient.odontogram</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_df_patient_odontogram_search"/>
+    </record>
+
+    <record id="view_df_patient_registration_form_inherit_odontogram" model="ir.ui.view">
+        <field name="name">df.patient.registration.form.inherit.odontogram</field>
+        <field name="model">df.patient.registration</field>
+        <field name="inherit_id" ref="df_patient_registration.view_df_patient_registration_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button type="object"
+                            name="action_open_odontogram"
+                            class="oe_stat_button"
+                            icon="fa-user-md">
+                        <field name="odontogram_count" string="Odontograma" widget="statinfo"/>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_df_patient_odontogram"
+              name="Odontogramas"
+              parent="df_patient_registration.menu_df_patient_root"
+              action="action_df_patient_odontogram"
+              sequence="20"/>
+</odoo>

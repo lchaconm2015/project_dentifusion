@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="df_patient_odontogram.OdontogramField">
+        <div class="o_df_odontogram_root">
+            <div class="o_df_odontogram_board">
+                <div class="o_df_legend">
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_healthy"></span>Sana</span>
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_treatment"></span>Tratamiento</span>
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_pathology"></span>Patología</span>
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_missing"></span>Ausente</span>
+                </div>
+
+                <div class="o_df_section_title">Dentición permanente superior</div>
+                <div class="o_df_row_pair">
+                    <t t-foreach="widget._getPermanentUpper()" t-as="row" t-key="row_index">
+                        <div class="o_df_row_block">
+                            <t t-foreach="row" t-as="code" t-key="code">
+                                <div t-att-class="widget._getToothClass(code)" t-att-data-code="code">
+                                    <div class="o_df_mini o_df_mini_top"><t t-esc="widget._getToothState(code).recession || ''"/></div>
+                                    <div class="o_df_tooth_body">
+                                        <div class="o_df_tooth_code"><t t-esc="code"/></div>
+                                    </div>
+                                    <div class="o_df_mini o_df_mini_bottom"><t t-esc="widget._getToothState(code).mobility || ''"/></div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="o_df_section_title">Dentición temporal superior</div>
+                <div class="o_df_row_pair o_df_primary">
+                    <t t-foreach="widget._getPrimaryUpper()" t-as="row" t-key="row_index">
+                        <div class="o_df_row_block">
+                            <t t-foreach="row" t-as="code" t-key="code">
+                                <div t-att-class="widget._getToothClass(code)" t-att-data-code="code">
+                                    <div class="o_df_tooth_circle">
+                                        <div class="o_df_tooth_code"><t t-esc="code"/></div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="o_df_section_title">Dentición temporal inferior</div>
+                <div class="o_df_row_pair o_df_primary">
+                    <t t-foreach="widget._getPrimaryLower()" t-as="row" t-key="row_index">
+                        <div class="o_df_row_block">
+                            <t t-foreach="row" t-as="code" t-key="code">
+                                <div t-att-class="widget._getToothClass(code)" t-att-data-code="code">
+                                    <div class="o_df_tooth_circle">
+                                        <div class="o_df_tooth_code"><t t-esc="code"/></div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="o_df_section_title">Dentición permanente inferior</div>
+                <div class="o_df_row_pair">
+                    <t t-foreach="widget._getPermanentLower()" t-as="row" t-key="row_index">
+                        <div class="o_df_row_block">
+                            <t t-foreach="row" t-as="code" t-key="code">
+                                <div t-att-class="widget._getToothClass(code)" t-att-data-code="code">
+                                    <div class="o_df_mini o_df_mini_top"><t t-esc="widget._getToothState(code).mobility || ''"/></div>
+                                    <div class="o_df_tooth_body">
+                                        <div class="o_df_tooth_code"><t t-esc="code"/></div>
+                                    </div>
+                                    <div class="o_df_mini o_df_mini_bottom"><t t-esc="widget._getToothState(code).recession || ''"/></div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <div class="o_df_odontogram_inspector">
+                <div class="o_df_inspector_title">Edición de pieza</div>
+                <div class="o_df_current_line">Pieza seleccionada: <strong class="o_df_current_tooth"></strong></div>
+
+                <div class="o_df_status_buttons">
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="healthy">Sana</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="treatment">Tratamiento</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="pathology">Patología</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="missing">Ausente</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Movilidad</label>
+                    <input type="text" class="form-control o_df_tooth_input o_df_input_mobility" placeholder="Ej. 1, 2, 3 o 4"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Recesión</label>
+                    <input type="text" class="form-control o_df_tooth_input o_df_input_recession" placeholder="Ej. leve, moderada, severa"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea class="form-control o_df_tooth_input o_df_input_notes" rows="6" placeholder="Notas clínicas de la pieza"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
