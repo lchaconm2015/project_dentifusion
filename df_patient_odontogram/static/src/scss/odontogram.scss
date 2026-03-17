@@ -20,12 +20,13 @@
     contain: layout style;
 }
 
-/* Leyenda de colores dentro del tablero (parte superior del rectángulo principal) */
+/* Leyenda de colores: una sola fila horizontal */
 .o_df_legend_strip {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 18px;
+    gap: 20px;
     padding: 4px 2px 8px;
     margin: 0 0 6px;
     border-bottom: 1px solid #e5e7eb;
@@ -33,10 +34,12 @@
 
 .o_df_legend_strip .o_df_legend_item {
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     gap: 8px;
     font-size: 13px;
     color: #374151;
+    white-space: nowrap;
 }
 
 .o_df_legend_strip .o_df_dot {
