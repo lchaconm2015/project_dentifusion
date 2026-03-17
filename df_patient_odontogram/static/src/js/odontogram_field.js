@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, useRef } from "@odoo/owl";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { registry } from "@web/core/registry";
 
@@ -51,6 +51,12 @@ export class OdontogramField extends Component {
     };
 
     setup() {
+        // Refs OWL (no this.refs): permiten acceder a inputs y al contenedor del panel
+        this.inspectorWrapperRef = useRef("inspectorWrapperRef");
+        this.mobilityRef = useRef("mobilityRef");
+        this.recessionRef = useRef("recessionRef");
+        this.notesRef = useRef("notesRef");
+
         this.state = useState({
             payload: parsePayload(this.props.value),
             currentToothCode: "11",
@@ -120,12 +126,9 @@ export class OdontogramField extends Component {
 
     onInputChange() {
         const item = this.payload.teeth[this.state.currentToothCode] || EMPTY_TOOTH();
-        const mobilityRef = this.refs.mobilityRef;
-        const recessionRef = this.refs.recessionRef;
-        const notesRef = this.refs.notesRef;
-        const mobilityEl = mobilityRef?.el ?? mobilityRef;
-        const recessionEl = recessionRef?.el ?? recessionRef;
-        const notesEl = notesRef?.el ?? notesRef;
+        const mobilityEl = this.mobilityRef?.el;
+        const recessionEl = this.recessionRef?.el;
+        const notesEl = this.notesRef?.el;
         if (mobilityEl) item.mobility = mobilityEl.value || "";
         if (recessionEl) item.recession = recessionEl.value || "";
         if (notesEl) item.notes = notesEl.value || "";
@@ -170,8 +173,7 @@ export class OdontogramField extends Component {
     onPanelDragStart(ev) {
         if (ev.button !== 0) return;
         ev.preventDefault();
-        const wrapper = this.refs.inspectorWrapperRef;
-        const el = wrapper?.el ?? wrapper;
+        const el = this.inspectorWrapperRef?.el;
         if (!el) return;
         const rect = el.getBoundingClientRect();
         let left = rect.left;
