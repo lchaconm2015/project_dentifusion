@@ -78,15 +78,13 @@
         <field name="model">df.patient.registration</field>
         <field name="inherit_id" ref="df_patient_registration.view_df_patient_registration_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <div class="oe_button_box" name="button_box">
-                    <button type="object"
-                            name="action_open_odontogram"
-                            class="oe_stat_button"
-                            icon="fa-user-md">
-                        <field name="odontogram_count" string="Odontograma" widget="statinfo"/>
-                    </button>
-                </div>
+            <!-- Botón de acceso al odontograma en el header del formulario -->
+            <xpath expr="//form/header" position="inside">
+                <button type="object"
+                        name="action_open_odontogram"
+                        class="btn btn-secondary"
+                        string="Odontograma"
+                        icon="fa-user-md"/>
             </xpath>
         </field>
     </record>

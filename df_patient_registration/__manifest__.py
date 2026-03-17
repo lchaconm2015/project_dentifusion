@@ -6,7 +6,7 @@
     "author": "LICSYST",
     "website": "https://www.licsyst.com",
     "license": "LGPL-3",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "account"],
     "data": [
         "security/ir.model.access.csv",
         "views/patient_registration_views.xml",

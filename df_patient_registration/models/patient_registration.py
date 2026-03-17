@@ -15,6 +15,12 @@ class DfPatientRegistration(models.Model):
     )
 
     # A. Datos del establecimiento y usuario/paciente
+    partner_id = fields.Many2one(
+        "res.partner",
+        string="Contacto relacionado",
+        help="Contacto comercial / fiscal vinculado a este paciente.",
+        ondelete="set null",
+    )
     institution_system = fields.Char(string="Institución del sistema", tracking=True)
     unicodigo = fields.Char(string="Unicódigo", tracking=True)
     health_establishment = fields.Char(string="Establecimiento de salud")
@@ -106,6 +112,17 @@ class DfPatientRegistration(models.Model):
         string="Descripción de la patología de la región afectada"
     )
 
+    state = fields.Selection(
+        [
+            ("draft", "Borrador"),
+            ("active", "Activo"),
+            ("archived", "Archivado"),
+        ],
+        string="Estado",
+        default="draft",
+        tracking=True,
+    )
+    partner_invoice_count = fields.Integer(string="Facturas", compute="_compute_partner_invoice_count")
     active = fields.Boolean(default=True)
 
     @api.depends("first_name", "second_name", "first_lastname", "second_lastname")
@@ -118,3 +135,100 @@ class DfPatientRegistration(models.Model):
                 rec.second_lastname or "",
             ]
             rec.display_name = " ".join([p for p in parts if p]).strip()
+
+    # -------------------------------------------------------------------------
+    # Sincronización con res.partner
+    # -------------------------------------------------------------------------
+
+    def _get_partner_base_vals(self):
+        """Valores base para crear/actualizar el partner desde el paciente."""
+        self.ensure_one()
+        name = self.display_name or ""
+        vals = {
+            "name": name,
+        }
+        return vals
+
+    def _ensure_partner(self):
+        """Crear o vincular automáticamente un partner para el paciente.
+
+        Estrategia:
+        - Si ya hay partner_id, no hace nada.
+        - Si no hay, busca un partner por nombre exacto (display_name).
+          - Si encuentra uno, lo vincula.
+          - Si no encuentra, crea un partner nuevo con datos básicos.
+        """
+        for rec in self:
+            if rec.partner_id:
+                continue
+
+            name = rec.display_name or ""
+            if not name:
+                continue
+
+            Partner = rec.env["res.partner"]
+
+            # Buscar un partner existente con el mismo nombre
+            existing = Partner.search([("name", "=", name)], limit=1)
+            if existing:
+                rec.partner_id = existing.id
+                continue
+
+            # Crear un nuevo partner con datos básicos
+            partner_vals = rec._get_partner_base_vals()
+            partner = Partner.create(partner_vals)
+            rec.partner_id = partner.id
+
+    @api.depends("partner_id")
+    def _compute_partner_invoice_count(self):
+        AccountMove = self.env.get("account.move")
+        for rec in self:
+            if not AccountMove or not rec.partner_id:
+                rec.partner_invoice_count = 0
+                continue
+            rec.partner_invoice_count = AccountMove.search_count(
+                [
+                    ("partner_id", "=", rec.partner_id.id),
+                    ("move_type", "in", ["out_invoice", "out_refund"]),
+                    ("state", "!=", "cancel"),
+                ]
+            )
+
+    @api.model
+    def create(self, vals):
+        records = super().create(vals)
+        records._ensure_partner()
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        # Sincronizar cambios básicos de nombre al partner vinculado
+        name_fields = {"first_name", "second_name", "first_lastname", "second_lastname"}
+        if name_fields.intersection(vals.keys()):
+            for rec in self.filtered("partner_id"):
+                partner_vals = rec._get_partner_base_vals()
+                rec.partner_id.write({"name": partner_vals.get("name")})
+        return res
+
+    # -------------------------------------------------------------------------
+    # Acciones smart buttons
+    # -------------------------------------------------------------------------
+
+    def action_open_partner(self):
+        self.ensure_one()
+        if not self.partner_id:
+            return False
+        action = self.env.ref("base.action_partner_form").read()[0]
+        action["views"] = [(False, "form")]
+        action["res_id"] = self.partner_id.id
+        return action
+
+    def action_open_partner_invoices(self):
+        self.ensure_one()
+        if not self.partner_id:
+            return False
+        action = self.env.ref("account.action_move_out_invoice_type").read()[0]
+        action["domain"] = [("partner_id", "=", self.partner_id.id)]
+        ctx = dict(self.env.context, default_partner_id=self.partner_id.id)
+        action["context"] = ctx
+        return action
