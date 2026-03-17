@@ -143,7 +143,9 @@ export class OdontogramField extends Component {
     }
 
     get currentToothState() {
-        return this.payload.teeth[this.state.currentToothCode] || EMPTY_TOOTH();
+        const payload = this.state.payload;
+        if (!payload || !payload.teeth) return EMPTY_TOOTH();
+        return payload.teeth[this.state.currentToothCode] || EMPTY_TOOTH();
     }
 }
 

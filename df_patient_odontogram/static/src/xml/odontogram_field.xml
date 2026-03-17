@@ -89,25 +89,25 @@
                 <div class="o_df_current_line">Pieza seleccionada: <strong class="o_df_current_tooth" t-esc="state.currentToothCode"/></div>
 
                 <div class="o_df_status_buttons">
-                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="healthy" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (state.currentToothState.status === 'healthy' ? ' active' : '')">Sana</button>
-                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="treatment" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (state.currentToothState.status === 'treatment' ? ' active' : '')">Tratamiento</button>
-                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="pathology" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (state.currentToothState.status === 'pathology' ? ' active' : '')">Patología</button>
-                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="missing" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (state.currentToothState.status === 'missing' ? ' active' : '')">Ausente</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="healthy" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (this.currentToothState.status === 'healthy' ? ' active' : '')">Sana</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="treatment" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (this.currentToothState.status === 'treatment' ? ' active' : '')">Tratamiento</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="pathology" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (this.currentToothState.status === 'pathology' ? ' active' : '')">Patología</button>
+                    <button type="button" class="btn btn-secondary o_df_status_btn" data-status="missing" t-on-click="(ev) => this.onStatusClick(ev)" t-att-class="'btn btn-secondary o_df_status_btn' + (this.currentToothState.status === 'missing' ? ' active' : '')">Ausente</button>
                 </div>
 
                 <div class="form-group">
                     <label>Movilidad</label>
-                    <input type="text" class="form-control o_df_tooth_input o_df_input_mobility" placeholder="Ej. 1, 2, 3 o 4" t-ref="mobilityRef" t-att-value="state.currentToothState.mobility" t-on-input="() => this.onInputChange()"/>
+                    <input type="text" class="form-control o_df_tooth_input o_df_input_mobility" placeholder="Ej. 1, 2, 3 o 4" t-ref="mobilityRef" t-att-value="this.currentToothState.mobility" t-on-input="() => this.onInputChange()"/>
                 </div>
 
                 <div class="form-group">
                     <label>Recesión</label>
-                    <input type="text" class="form-control o_df_tooth_input o_df_input_recession" placeholder="Ej. leve, moderada, severa" t-ref="recessionRef" t-att-value="state.currentToothState.recession" t-on-input="() => this.onInputChange()"/>
+                    <input type="text" class="form-control o_df_tooth_input o_df_input_recession" placeholder="Ej. leve, moderada, severa" t-ref="recessionRef" t-att-value="this.currentToothState.recession" t-on-input="() => this.onInputChange()"/>
                 </div>
 
                 <div class="form-group">
                     <label>Observaciones</label>
-                    <textarea class="form-control o_df_tooth_input o_df_input_notes" rows="6" placeholder="Notas clínicas de la pieza" t-ref="notesRef" t-att-value="state.currentToothState.notes" t-on-input="() => this.onInputChange()"/>
+                    <textarea class="form-control o_df_tooth_input o_df_input_notes" rows="6" placeholder="Notas clínicas de la pieza" t-ref="notesRef" t-att-value="this.currentToothState.notes" t-on-input="() => this.onInputChange()"/>
                 </div>
             </div>
         </div>
