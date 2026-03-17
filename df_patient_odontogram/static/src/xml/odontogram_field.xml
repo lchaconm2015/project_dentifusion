@@ -8,20 +8,19 @@
         </div>
     </t>
 
-    <!-- Template OWL para Odoo 16: leyenda arriba, odontograma a la izquierda, panel lateral derecho persistente -->
+    <!-- Template OWL para Odoo 16: rectángulo principal = tablero (leyenda + dientes) -->
     <t t-name="df_patient_odontogram.OdontogramField" owl="1">
         <div class="o_df_odontogram_field o_df_odontogram_wrapper">
-            <!-- Leyenda de colores arriba del odontograma -->
-            <div class="o_df_legend_strip">
-                <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_healthy"></span>Blanco = Sana</span>
-                <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_treatment"></span>Azul = Tratamiento</span>
-                <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_pathology"></span>Rojo = Patología</span>
-                <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_missing"></span>Gris = Ausente</span>
-            </div>
-
-            <!-- Fila: tablero a la izquierda | panel lateral a la derecha (siempre en columna, nunca flotante) -->
+            <!-- Fila: tablero a la izquierda | panel lateral a la derecha -->
             <div class="o_df_odontogram_content_row">
                 <div class="o_df_odontogram_board">
+                <!-- Leyenda de colores DENTRO del rectángulo del tablero -->
+                <div class="o_df_legend_strip">
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_healthy"></span>Blanco = Sana</span>
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_treatment"></span>Azul = Tratamiento</span>
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_pathology"></span>Rojo = Patología</span>
+                    <span class="o_df_legend_item"><span class="o_df_dot o_df_dot_missing"></span>Gris = Ausente</span>
+                </div>
                 <div class="o_df_section_title">Dentición permanente superior</div>
                 <div class="o_df_row_pair">
                     <t t-foreach="this.getPermanentUpper()" t-as="row" t-key="row_index">

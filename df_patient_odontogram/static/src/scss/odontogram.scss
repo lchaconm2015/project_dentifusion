@@ -20,14 +20,14 @@
     contain: layout style;
 }
 
-/* Leyenda de colores arriba del odontograma */
+/* Leyenda de colores dentro del tablero (parte superior del rectángulo principal) */
 .o_df_legend_strip {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 20px;
-    padding: 10px 0 14px;
-    margin-bottom: 8px;
+    gap: 18px;
+    padding: 4px 2px 8px;
+    margin: 0 0 6px;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -77,14 +77,15 @@
     max-width: 100%;
 }
 
-/* Tablero: siempre en la primera columna */
+/* Tablero: siempre en la primera columna. ESTE es el rectángulo principal exterior. */
 .o_df_odontogram_content_row .o_df_odontogram_board {
     grid-area: board_area;
     min-width: 0;
     background: #fff;
-    border: 1px solid #d9d9d9;
+    border: 1px solid #d1d5db;
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px 16px 16px 16px;
+    box-sizing: border-box;
 }
 
 /* Contenedor del panel: en columna por defecto; al arrastrar se aplica position:fixed por JS (inline) */
