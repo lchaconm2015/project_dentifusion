@@ -22,19 +22,19 @@
         <field name="arch" type="xml">
             <form string="Registro de Paciente">
                 <header>
-                    <!-- Smart button: ir al contacto relacionado -->
-                    <button type="action"
+                    <!-- Smart button: ir al contacto relacionado (type=object llama al método que devuelve la acción) -->
+                    <button type="object"
                             name="action_open_partner"
                             class="oe_stat_button"
-                            attrs="{'invisible': [('partner_id','=',False)]}"
+                            attrs="{'invisible': [('partner_id', '=', False)]}"
                             icon="fa-user">
                         <field name="partner_id" string="Contacto" widget="statinfo"/>
                     </button>
                     <!-- Smart button: ver facturas del paciente -->
-                    <button type="action"
+                    <button type="object"
                             name="action_open_partner_invoices"
                             class="oe_stat_button"
-                            attrs="{'invisible': [('partner_invoice_count','=',0)]}"
+                            attrs="{'invisible': [('partner_invoice_count', '=', 0)]}"
                             icon="fa-file-text-o">
                         <field name="partner_invoice_count" string="Facturas" widget="statinfo"/>
                     </button>
