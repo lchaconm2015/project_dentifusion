@@ -3,17 +3,21 @@
    panel lateral derecho persistente (nunca flotante)
    ============================================================ */
 
+/* Raíz del widget: ancho completo y contenedor de layout para que nada se monte encima */
 .o_df_odontogram_field {
-    width: 100%;
+    width: 100% !important;
     min-width: 0;
+    display: block !important;
 }
 
-/* Contenedor principal: columna (leyenda + fila contenido) */
+/* Contenedor principal: columna (leyenda + fila contenido); evita que temas Odoo posicionen hijos */
 .o_df_odontogram_wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-width: 100%;
     gap: 0;
+    contain: layout style;
 }
 
 /* Leyenda de colores arriba del odontograma */
@@ -60,19 +64,22 @@
     border-color: #6b7280;
 }
 
-/* Fila: tablero (izq) | panel lateral (der) — siempre en columna, nunca superpuesto */
+/* Fila: tablero (col 1) | panel lateral (col 2) — grid estricto para que NUNCA se monte encima */
 .o_df_odontogram_content_row {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    display: grid !important;
+    grid-template-columns: 1fr 320px !important;
+    grid-template-rows: 1fr;
+    grid-template-areas: "board_area inspector_area";
+    align-items: start;
     gap: 20px;
     min-height: 420px;
     width: 100%;
+    max-width: 100%;
 }
 
-/* Tablero del odontograma (ocupa el espacio restante) */
-.o_df_odontogram_board {
-    flex: 1 1 auto;
+/* Tablero: siempre en la primera columna */
+.o_df_odontogram_content_row .o_df_odontogram_board {
+    grid-area: board_area;
     min-width: 0;
     background: #fff;
     border: 1px solid #d9d9d9;
@@ -80,24 +87,27 @@
     padding: 16px;
 }
 
-/* Panel lateral derecho persistente: ancho fijo, en flujo, nunca position:fixed */
-.o_df_odontogram_field .o_df_odontogram_inspector {
-    flex: 0 0 320px;
-    width: 320px;
-    max-width: 320px;
+/* Panel lateral: SIEMPRE en la segunda columna, en flujo normal, NUNCA flotante/modal */
+.o_df_odontogram_wrapper .o_df_odontogram_content_row .o_df_odontogram_inspector {
+    grid-area: inspector_area;
+    position: relative !important;
+    float: none !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    bottom: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 0 !important;
+    width: 100%;
     min-width: 280px;
+    max-width: 320px;
     background: #fafafa;
     border: 1px solid #d9d9d9;
     border-radius: 8px;
     padding: 16px;
-    position: relative;
-    top: auto;
-    right: auto;
-    left: auto;
-    bottom: auto;
-    z-index: 0;
     overflow-y: auto;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     gap: 12px;
 }
@@ -316,12 +326,11 @@
 /* En pantallas estrechas: tablero arriba, panel abajo */
 @media (max-width: 1024px) {
     .o_df_odontogram_content_row {
-        flex-direction: column;
+        grid-template-columns: 1fr !important;
+        grid-template-areas: "board_area" "inspector_area" !important;
     }
 
-    .o_df_odontogram_field .o_df_odontogram_inspector {
-        flex: 0 0 auto;
-        width: 100%;
+    .o_df_odontogram_wrapper .o_df_odontogram_content_row .o_df_odontogram_inspector {
         max-width: 100%;
     }
 }
