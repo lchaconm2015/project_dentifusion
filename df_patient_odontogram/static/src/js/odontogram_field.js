@@ -142,6 +142,19 @@ export class OdontogramField extends Component {
         }
     }
 
+    /** Guardar cambios de la pieza actual (sincroniza con el formulario) */
+    async onSaveClick() {
+        this.onInputChange();
+        await this._updateValue();
+    }
+
+    /** Limpiar / resetear la pieza actual a estado sano y campos vacíos */
+    async onResetTooth() {
+        const code = this.state.currentToothCode;
+        this.payload.teeth[code] = EMPTY_TOOTH();
+        await this._updateValue();
+    }
+
     get currentToothState() {
         const payload = this.state.payload;
         if (!payload || !payload.teeth) return EMPTY_TOOTH();
