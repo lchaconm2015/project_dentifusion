@@ -87,18 +87,16 @@
     padding: 16px;
 }
 
-/* Panel lateral: SIEMPRE en la segunda columna, en flujo normal, NUNCA flotante/modal */
-.o_df_odontogram_wrapper .o_df_odontogram_content_row .o_df_odontogram_inspector {
+/* Contenedor del panel: en columna por defecto; al arrastrar se aplica position:fixed por JS (inline) */
+.o_df_odontogram_wrapper .o_df_odontogram_content_row .o_df_inspector_wrapper {
     grid-area: inspector_area;
-    position: relative !important;
-    float: none !important;
-    top: auto !important;
-    right: auto !important;
-    left: auto !important;
-    bottom: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-    z-index: 0 !important;
+    float: none;
+    min-width: 280px;
+}
+
+/* Cuando el wrapper tiene estilo inline (position:fixed), lo aplicamos; el panel interior mantiene el mismo aspecto */
+.o_df_odontogram_wrapper .o_df_odontogram_content_row .o_df_inspector_wrapper .o_df_odontogram_inspector {
+    position: relative;
     width: 100%;
     min-width: 280px;
     max-width: 320px;
@@ -107,19 +105,34 @@
     border-radius: 8px;
     padding: 16px;
     overflow-y: auto;
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Encabezado del panel: número de pieza */
-.o_df_inspector_header {
+/* Barra de arrastre: el usuario puede arrastrar desde aquí para mover el panel */
+.o_df_inspector_drag_handle {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 8px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 4px;
+    padding: 8px 10px;
+    margin: -16px -16px 12px -16px;
+    background: #e5e7eb;
+    border-radius: 8px 8px 0 0;
+    cursor: move;
+    user-select: none;
+    border-bottom: 2px solid #d1d5db;
+}
+
+.o_df_inspector_drag_handle:hover {
+    background: #d1d5db;
+}
+
+.o_df_inspector_drag_handle_icon {
+    font-size: 14px;
+    color: #6b7280;
+    letter-spacing: 2px;
 }
 
 .o_df_inspector_label {

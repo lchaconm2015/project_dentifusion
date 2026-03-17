@@ -86,9 +86,11 @@
                     </t>
                 </div>
                 </div>
-                <!-- Panel lateral derecho persistente: se actualiza al seleccionar cada pieza -->
-                <aside class="o_df_odontogram_inspector" role="complementary" aria-label="Edición de pieza dental">
-                    <div class="o_df_inspector_header">
+                <!-- Panel de edición: arrastrable; puede quedarse en columna o moverse a la posición que desee el usuario -->
+                <div class="o_df_inspector_wrapper" t-ref="inspectorWrapperRef" t-att-style="this.getInspectorWrapperStyle()">
+                    <aside class="o_df_odontogram_inspector" role="complementary" aria-label="Edición de pieza dental">
+                    <div class="o_df_inspector_drag_handle" t-on-mousedown="(ev) => this.onPanelDragStart(ev)" title="Arrastrar para mover el panel">
+                        <span class="o_df_inspector_drag_handle_icon">⋮⋮</span>
                         <span class="o_df_inspector_label">Pieza</span>
                         <span class="o_df_inspector_tooth_code" t-esc="state.currentToothCode"/>
                     </div>
@@ -121,6 +123,7 @@
                         <button type="button" class="btn btn-secondary o_df_btn_reset" t-on-click="() => this.onResetTooth()">Limpiar pieza</button>
                     </div>
                 </aside>
+                </div>
             </div>
         </div>
     </t>

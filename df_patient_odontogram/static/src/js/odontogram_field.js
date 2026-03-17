@@ -54,7 +54,11 @@ export class OdontogramField extends Component {
         this.state = useState({
             payload: parsePayload(this.props.value),
             currentToothCode: "11",
+            panelPosition: null, // null = en columna lateral; { left, top } = posición flotante arrastrable
+            dragStart: null,
         });
+        this._boundDragMove = this._onPanelDragMove.bind(this);
+        this._boundDragEnd = this._onPanelDragEnd.bind(this);
     }
 
     onWillUpdateProps(nextProps) {
@@ -153,6 +157,51 @@ export class OdontogramField extends Component {
         const code = this.state.currentToothCode;
         this.payload.teeth[code] = EMPTY_TOOTH();
         await this._updateValue();
+    }
+
+    /** Estilo del contenedor del panel: si tiene posición guardada, se muestra flotante ahí */
+    getInspectorWrapperStyle() {
+        const pos = this.state.panelPosition;
+        if (!pos) return "";
+        return `position: fixed; left: ${pos.left}px; top: ${pos.top}px; z-index: 1050; width: 320px; max-width: 90vw;`;
+    }
+
+    /** Inicio de arrastre: pasa a flotante en la posición actual y empieza a seguir el ratón */
+    onPanelDragStart(ev) {
+        if (ev.button !== 0) return;
+        ev.preventDefault();
+        const wrapper = this.refs.inspectorWrapperRef;
+        const el = wrapper?.el ?? wrapper;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        let left = rect.left;
+        let top = rect.top;
+        if (this.state.panelPosition) {
+            left = this.state.panelPosition.left;
+            top = this.state.panelPosition.top;
+        } else {
+            this.state.panelPosition = { left, top };
+        }
+        this.state.dragStart = { x: ev.clientX, y: ev.clientY, left, top };
+        document.addEventListener("mousemove", this._boundDragMove);
+        document.addEventListener("mouseup", this._boundDragEnd);
+        document.body.style.userSelect = "none";
+    }
+
+    _onPanelDragMove(ev) {
+        if (!this.state.dragStart) return;
+        const { x, y, left, top } = this.state.dragStart;
+        this.state.panelPosition = {
+            left: left + (ev.clientX - x),
+            top: Math.max(0, top + (ev.clientY - y)),
+        };
+    }
+
+    _onPanelDragEnd() {
+        this.state.dragStart = null;
+        document.removeEventListener("mousemove", this._boundDragMove);
+        document.removeEventListener("mouseup", this._boundDragEnd);
+        document.body.style.userSelect = "";
     }
 
     get currentToothState() {
