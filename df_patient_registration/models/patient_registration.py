@@ -21,6 +21,13 @@ class DfPatientRegistration(models.Model):
         help="Contacto comercial / fiscal vinculado a este paciente.",
         ondelete="set null",
     )
+    patient_photo = fields.Image(
+        string="Foto del paciente",
+        max_width=1024,
+        max_height=1024,
+    )
+    identification = fields.Char(string="Cédula", tracking=True)
+    address = fields.Char(string="Dirección")
     institution_system = fields.Char(string="Institución del sistema", tracking=True)
     unicodigo = fields.Char(string="Unicódigo", tracking=True)
     health_establishment = fields.Char(string="Establecimiento de salud")
@@ -63,6 +70,7 @@ class DfPatientRegistration(models.Model):
     current_illness = fields.Text(string="Enfermedad actual")
 
     # D. Antecedentes patológicos personales
+    personal_no_refiere = fields.Boolean(string="No refiere")
     personal_antibiotic_allergy = fields.Boolean(string="Alergia antibiótico")
     personal_anesthesia_allergy = fields.Boolean(string="Alergia anestesia")
     personal_hemorrhages = fields.Boolean(string="Hemorragias")
@@ -123,6 +131,14 @@ class DfPatientRegistration(models.Model):
         tracking=True,
     )
     partner_invoice_count = fields.Integer(string="Facturas", compute="_compute_partner_invoice_count")
+    patient_image_attachment_ids = fields.Many2many(
+        "ir.attachment",
+        "df_patient_registration_image_attachment_rel",
+        "patient_id",
+        "attachment_id",
+        string="Imágenes del paciente",
+        help="Adjunta imágenes relacionadas a la historia clínica (fotografías, radiografías, etc.).",
+    )
     active = fields.Boolean(default=True)
 
     @api.depends("first_name", "second_name", "first_lastname", "second_lastname")
@@ -147,6 +163,10 @@ class DfPatientRegistration(models.Model):
         vals = {
             "name": name,
         }
+        if self.identification:
+            vals["vat"] = self.identification
+        if self.address:
+            vals["street"] = self.address
         return vals
 
     def _ensure_partner(self):
@@ -163,13 +183,19 @@ class DfPatientRegistration(models.Model):
                 continue
 
             name = rec.display_name or ""
-            if not name:
+            if not name and not rec.identification:
                 continue
 
             Partner = rec.env["res.partner"]
 
-            # Buscar un partner existente con el mismo nombre
-            existing = Partner.search([("name", "=", name)], limit=1)
+            # Buscar primero por identificación (evita duplicados)
+            existing = False
+            if rec.identification:
+                existing = Partner.search([("vat", "=", rec.identification)], limit=1)
+
+            # Si no hay por identificación, buscar por nombre exacto
+            if not existing and name:
+                existing = Partner.search([("name", "=", name)], limit=1)
             if existing:
                 rec.partner_id = existing.id
                 continue
@@ -203,11 +229,24 @@ class DfPatientRegistration(models.Model):
     def write(self, vals):
         res = super().write(vals)
         # Sincronizar cambios básicos de nombre al partner vinculado
-        name_fields = {"first_name", "second_name", "first_lastname", "second_lastname"}
-        if name_fields.intersection(vals.keys()):
+        sync_fields = {
+            "first_name",
+            "second_name",
+            "first_lastname",
+            "second_lastname",
+            "identification",
+            "address",
+        }
+        if sync_fields.intersection(vals.keys()):
             for rec in self.filtered("partner_id"):
                 partner_vals = rec._get_partner_base_vals()
-                rec.partner_id.write({"name": partner_vals.get("name")})
+                rec.partner_id.write(
+                    {
+                        "name": partner_vals.get("name"),
+                        "vat": partner_vals.get("vat") or rec.partner_id.vat,
+                        "street": partner_vals.get("street") or rec.partner_id.street,
+                    }
+                )
         return res
 
     # -------------------------------------------------------------------------
@@ -232,3 +271,20 @@ class DfPatientRegistration(models.Model):
         ctx = dict(self.env.context, default_partner_id=self.partner_id.id)
         action["context"] = ctx
         return action
+
+    # -------------------------------------------------------------------------
+    # Acciones de estado
+    # -------------------------------------------------------------------------
+
+    def action_set_state_draft(self):
+        self.write({"state": "draft", "active": True})
+        return True
+
+    def action_set_state_active(self):
+        self.write({"state": "active", "active": True})
+        return True
+
+    def action_set_state_archived(self):
+        # Mantiene trazabilidad con state y además archiva el registro (active=False)
+        self.write({"state": "archived", "active": False})
+        return True

@@ -22,24 +22,48 @@
         <field name="arch" type="xml">
             <form string="Registro de Paciente">
                 <header>
-                    <!-- Smart button: ir al contacto relacionado (type=object llama al método que devuelve la acción) -->
                     <button type="object"
-                            name="action_open_partner"
-                            class="oe_stat_button"
-                            attrs="{'invisible': [('partner_id', '=', False)]}"
-                            icon="fa-user">
-                        <field name="partner_id" string="Contacto" widget="statinfo"/>
-                    </button>
-                    <!-- Smart button: ver facturas del paciente -->
+                            name="action_set_state_draft"
+                            string="Borrador"
+                            class="btn btn-secondary"
+                            attrs="{'invisible': [('state', '=', 'draft')]}"/>
                     <button type="object"
-                            name="action_open_partner_invoices"
-                            class="oe_stat_button"
-                            attrs="{'invisible': [('partner_invoice_count', '=', 0)]}"
-                            icon="fa-file-text-o">
-                        <field name="partner_invoice_count" string="Facturas" widget="statinfo"/>
-                    </button>
+                            name="action_set_state_active"
+                            string="Activar"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('state', '=', 'active')]}"/>
+                    <button type="object"
+                            name="action_set_state_archived"
+                            string="Archivar"
+                            class="btn btn-secondary"
+                            attrs="{'invisible': [('state', '=', 'archived')]}"/>
                 </header>
                 <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_photo" widget="image" class="oe_avatar" options="{'preview_image': 'patient_photo'}"/>
+                        </group>
+                        <group>
+                            <field name="identification"/>
+                            <field name="address"/>
+                        </group>
+                    </group>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                name="action_open_partner"
+                                class="oe_stat_button"
+                                attrs="{'invisible': [('partner_id', '=', False)]}"
+                                icon="fa-user">
+                            <field name="partner_id" string="Contacto" widget="statinfo"/>
+                        </button>
+                        <button type="object"
+                                name="action_open_partner_invoices"
+                                class="oe_stat_button"
+                                attrs="{'invisible': [('partner_invoice_count', '=', 0)]}"
+                                icon="fa-file-text-o">
+                            <field name="partner_invoice_count" string="Facturas" widget="statinfo"/>
+                        </button>
+                    </div>
                     <field name="state" widget="statusbar" statusbar_visible="draft,active,archived"/>
                     <group string="A. Datos del establecimiento y usuario / paciente">
                         <group>
@@ -75,6 +99,7 @@
                     <group string="D. Antecedentes patológicos personales">
                         <group col="2">
                             <group>
+                                <field name="personal_no_refiere"/>
                                 <field name="personal_antibiotic_allergy"/>
                                 <field name="personal_anesthesia_allergy"/>
                                 <field name="personal_hemorrhages"/>
@@ -142,6 +167,13 @@
                             <field name="exam_others"/>
                         </group>
                         <field name="affected_region_description"/>
+                    </group>
+
+                    <group string="Adjuntos clínicos (imágenes)">
+                        <field name="patient_image_attachment_ids"
+                               widget="many2many_binary"
+                               domain="[('mimetype', 'ilike', 'image/%')]"
+                               options="{'no_create': True}"/>
                     </group>
                 </sheet>
                 <chatter/>
