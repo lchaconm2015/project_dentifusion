@@ -37,17 +37,19 @@
                             string="Archivar"
                             class="btn btn-secondary"
                             attrs="{'invisible': [('state', '=', 'archived')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,archived"/>
                 </header>
                 <sheet>
-                    <group>
-                        <group>
-                            <field name="patient_photo" widget="image" class="oe_avatar" options="{'preview_image': 'patient_photo'}"/>
-                        </group>
-                        <group>
-                            <field name="identification"/>
-                            <field name="address"/>
-                        </group>
-                    </group>
+                    <!-- Foto a la derecha + nombre grande (estilo Odoo nativo) -->
+                    <div class="oe_right">
+                        <field name="patient_photo" widget="image" class="oe_avatar"
+                               options="{'preview_image': 'patient_photo'}"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1" nolabel="1"/>
+                        </h1>
+                    </div>
                     <div class="oe_button_box" name="button_box">
                         <button type="object"
                                 name="action_open_partner"
@@ -64,9 +66,11 @@
                             <field name="partner_invoice_count" string="Facturas" widget="statinfo"/>
                         </button>
                     </div>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,active,archived"/>
+
                     <group string="A. Datos del establecimiento y usuario / paciente">
                         <group>
+                            <field name="identification"/>
+                            <field name="address"/>
                             <field name="institution_system"/>
                             <field name="unicodigo"/>
                             <field name="health_establishment"/>
@@ -203,5 +207,6 @@
     </record>
 
     <menuitem id="menu_df_patient_root" name="Clínica"/>
-    <menuitem id="menu_df_patient_registration" name="Pacientes" parent="menu_df_patient_root" action="action_df_patient_registration"/>
+    <menuitem id="menu_df_patient_registration" name="Pacientes" parent="menu_df_patient_root"
+              action="action_df_patient_registration"/>
 </odoo>
