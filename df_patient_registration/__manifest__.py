@@ -9,8 +9,8 @@
     "depends": ["base", "mail", "account"],
     "data": [
         "security/ir.model.access.csv",
-        "views/patient_registration_views.xml",
         "reports/patient_registration_report.xml",
+        "views/patient_registration_views.xml",
     ],
     "installable": True,
     "application": True,
