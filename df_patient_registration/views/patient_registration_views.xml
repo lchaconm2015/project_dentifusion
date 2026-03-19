@@ -115,11 +115,15 @@
                                 <field name="personal_other"/>
                             </group>
                         </group>
-                        <field name="personal_background_notes" attrs="{'invisible': [('personal_no_refiere', '=', True)]}"/>
+                        <field name="personal_observaciones" attrs="{'invisible': [('personal_no_refiere', '=', True)]}"/>
                     </group>
 
                     <group string="E. Antecedentes patológicos familiares">
-                        <group col="2">
+                        <group>
+                            <field name="family_no_refiere"/>
+                        </group>
+
+                        <group col="2" attrs="{'invisible': [('family_no_refiere', '=', True)]}">
                             <group>
                                 <field name="family_cardiopathy"/>
                                 <field name="family_hypertension"/>
@@ -135,7 +139,7 @@
                                 <field name="family_other"/>
                             </group>
                         </group>
-                        <field name="family_background_notes"/>
+                        <field name="family_observaciones" attrs="{'invisible': [('family_no_refiere', '=', True)]}"/>
                     </group>
 
                     <group string="F. Constantes vitales">

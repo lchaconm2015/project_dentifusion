@@ -82,8 +82,10 @@ class DfPatientRegistration(models.Model):
     personal_heart_disease = fields.Boolean(string="Enfermedad cardíaca")
     personal_other = fields.Boolean(string="Otro")
     personal_background_notes = fields.Text(string="Observaciones antecedentes personales")
+    personal_observaciones = fields.Text(string="Observaciones")
 
     # E. Antecedentes patológicos familiares
+    family_no_refiere = fields.Boolean(string="No refiere")
     family_cardiopathy = fields.Boolean(string="Cardiopatía")
     family_hypertension = fields.Boolean(string="Hipertensión arterial")
     family_vascular_disease = fields.Boolean(string="Enf. C. Vascular")
@@ -95,6 +97,7 @@ class DfPatientRegistration(models.Model):
     family_malformation = fields.Boolean(string="Malformación")
     family_other = fields.Boolean(string="Otro")
     family_background_notes = fields.Text(string="Observaciones antecedentes familiares")
+    family_observaciones = fields.Text(string="Observaciones")
 
     # F. Constantes vitales
     temperature = fields.Float(string="Temperatura °C", digits=(16, 2))
