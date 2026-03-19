@@ -6,8 +6,11 @@
     "author": "LICSYST",
     "website": "https://www.licsyst.com",
     "license": "LGPL-3",
-    "depends": ["base", "mail"],
-    "data": [],
+    "depends": ["base", "mail", "df_patient_registration"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/dental_voice_session_views.xml",
+    ],
     "installable": True,
     "application": False,
 }
