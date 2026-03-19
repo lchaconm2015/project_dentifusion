@@ -65,6 +65,7 @@
                     <group string="A. Datos del establecimiento y usuario / paciente">
                         <group>
                             <field name="identification"/>
+                            <field name="phone"/>
                             <field name="address"/>
                             <field name="institution_system"/>
                             <field name="unicodigo"/>

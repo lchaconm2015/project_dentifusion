@@ -28,6 +28,7 @@ class DfPatientRegistration(models.Model):
     )
     identification = fields.Char(string="Cédula", tracking=True)
     address = fields.Char(string="Dirección")
+    phone = fields.Char(string="Teléfono", tracking=True)
     institution_system = fields.Char(string="Institución del sistema", tracking=True)
     unicodigo = fields.Char(string="Unicódigo", tracking=True)
     health_establishment = fields.Char(string="Establecimiento de salud")
@@ -175,6 +176,8 @@ class DfPatientRegistration(models.Model):
             vals["vat"] = self.identification
         if self.address:
             vals["street"] = self.address
+        if self.phone:
+            vals["phone"] = self.phone
         return vals
 
     def _ensure_partner(self):
@@ -244,6 +247,7 @@ class DfPatientRegistration(models.Model):
             "second_lastname",
             "identification",
             "address",
+            "phone",
         }
         if sync_fields.intersection(vals.keys()):
             for rec in self.filtered("partner_id"):
