@@ -89,11 +89,21 @@
     grid-area: board_area;
     min-width: 0;
     background: #fff;
-    border: 1px solid #d1d5db;
     border-radius: 8px;
     padding: 12px 16px 16px 16px;
     box-sizing: border-box;
     overflow: visible;
+    position: relative;
+}
+
+/* Borde principal del tablero dibujado como overlay para evitar “cortes” por layout del form */
+.o_df_odontogram_content_row .o_df_odontogram_board::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    pointer-events: none;
 }
 
 /* Contenedor del panel: en columna por defecto; al arrastrar se aplica position:fixed por JS (inline) */
