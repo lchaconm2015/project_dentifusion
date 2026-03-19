@@ -8,6 +8,8 @@
     width: 100% !important;
     min-width: 0;
     display: block !important;
+    overflow: visible; /* evita que el borde se recorte por contenedores del form */
+    box-sizing: border-box;
 }
 
 /* Contenedor principal: columna (leyenda + fila contenido); evita que temas Odoo posicionen hijos */
@@ -78,6 +80,8 @@
     min-height: 420px;
     width: 100%;
     max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
 }
 
 /* Tablero: siempre en la primera columna. ESTE es el rectángulo principal exterior. */
@@ -89,6 +93,7 @@
     border-radius: 8px;
     padding: 12px 16px 16px 16px;
     box-sizing: border-box;
+    overflow: visible;
 }
 
 /* Contenedor del panel: en columna por defecto; al arrastrar se aplica position:fixed por JS (inline) */
