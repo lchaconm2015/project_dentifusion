@@ -22,6 +22,10 @@
         <field name="arch" type="xml">
             <form string="Registro de Paciente">
                 <header>
+                    <button type="action"
+                            name="%(df_patient_registration.action_report_df_patient_history)d"
+                            string="Imprimir Historia Clinica"
+                            class="btn btn-secondary"/>
                     <button type="object"
                             name="action_set_state_draft"
                             string="Borrador"
