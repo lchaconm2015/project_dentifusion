@@ -68,9 +68,7 @@
                             <field name="address"/>
                             <field name="institution_system"/>
                             <field name="unicodigo"/>
-                            <field name="health_establishment"/>
                             <field name="unique_clinical_history_number"/>
-                            <field name="file_number"/>
                         </group>
                         <group>
                             <field name="first_lastname"/>
@@ -79,7 +77,6 @@
                             <field name="second_name"/>
                             <field name="sex"/>
                             <field name="age"/>
-                            <field name="age_condition"/>
                         </group>
                     </group>
 
