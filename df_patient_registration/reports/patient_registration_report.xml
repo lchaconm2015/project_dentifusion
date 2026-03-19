@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_df_patient_history" model="ir.actions.report">
+        <field name="name">Historia Clínica</field>
+        <field name="model">df.patient.registration</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">df_patient_registration.report_df_patient_history</field>
+        <field name="report_file">df_patient_registration.report_df_patient_history</field>
+        <field name="print_report_name">'Historia Clinica - %s' % (object.display_name or '')</field>
+        <field name="binding_model_id" ref="model_df_patient_registration"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_df_patient_history">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Historia Clinica Odontologica</h2>
+                        <h3 t-esc="o.display_name or ''"/>
+
+                        <table class="table table-sm table-bordered" style="width:100%; margin-top: 10px;">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Estado</strong></td>
+                                    <td t-esc="dict(o._fields['state'].selection).get(o.state, '')"/>
+                                    <td><strong>Cedula</strong></td>
+                                    <td t-esc="o.identification or ''"/>
+                                </tr>
+                                <tr>
+                                    <td><strong>Telefono</strong></td>
+                                    <td t-esc="o.phone or ''"/>
+                                    <td><strong>Direccion</strong></td>
+                                    <td t-esc="o.address or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>A. Datos del establecimiento y usuario / paciente</h4>
+                        <table class="table table-sm table-bordered" style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Institucion</strong></td>
+                                    <td t-esc="o.institution_system or ''"/>
+                                    <td><strong>Unicodigo</strong></td>
+                                    <td t-esc="o.unicodigo or ''"/>
+                                </tr>
+                                <tr>
+                                    <td><strong>Establecimiento</strong></td>
+                                    <td t-esc="o.health_establishment or ''"/>
+                                    <td><strong>No. Historia Clinica</strong></td>
+                                    <td t-esc="o.unique_clinical_history_number or ''"/>
+                                </tr>
+                                <tr>
+                                    <td><strong>Paciente</strong></td>
+                                    <td colspan="3" t-esc="o.display_name or ''"/>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sexo</strong></td>
+                                    <td t-esc="dict(o._fields['sex'].selection).get(o.sex, '') if o.sex else ''"/>
+                                    <td><strong>Edad</strong></td>
+                                    <td>
+                                        <span t-esc="o.age or ''"/>
+                                        <span t-esc="dict(o._fields['age_condition'].selection).get(o.age_condition, '') if o.age_condition else ''"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>B. Motivo de consulta</h4>
+                        <p t-esc="o.consultation_reason or ''"/>
+
+                        <h4>C. Enfermedad actual</h4>
+                        <p t-esc="o.current_illness or ''"/>
+
+                        <h4>D. Antecedentes patologicos personales</h4>
+                        <p>
+                            <strong>No refiere:</strong>
+                            <span t-esc="'Si' if o.personal_no_refiere else 'No'"/>
+                        </p>
+                        <p t-if="not o.personal_no_refiere">
+                            <strong>Observaciones:</strong>
+                            <span t-esc="o.personal_observaciones or ''"/>
+                        </p>
+
+                        <h4>E. Antecedentes patologicos familiares</h4>
+                        <p>
+                            <strong>No refiere:</strong>
+                            <span t-esc="'Si' if o.family_no_refiere else 'No'"/>
+                        </p>
+                        <p t-if="not o.family_no_refiere">
+                            <strong>Observaciones:</strong>
+                            <span t-esc="o.family_observaciones or ''"/>
+                        </p>
+
+                        <h4>F. Constantes vitales</h4>
+                        <table class="table table-sm table-bordered" style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Temperatura</strong></td>
+                                    <td t-esc="o.temperature or ''"/>
+                                    <td><strong>Pulso</strong></td>
+                                    <td t-esc="o.pulse or ''"/>
+                                </tr>
+                                <tr>
+                                    <td><strong>Frecuencia respiratoria</strong></td>
+                                    <td t-esc="o.respiratory_rate or ''"/>
+                                    <td><strong>Presion arterial</strong></td>
+                                    <td t-esc="o.blood_pressure or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>P. Tratamiento</h4>
+                        <table class="table table-sm table-bordered" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>No. sesion</th>
+                                    <th>Fecha</th>
+                                    <th>Diagnosticos y complicaciones</th>
+                                    <th>Procedimientos</th>
+                                    <th>Prescripciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.treatment_line_ids" t-as="l">
+                                    <td t-esc="l.session_number or ''"/>
+                                    <td t-esc="l.date or ''"/>
+                                    <td t-esc="l.diagnosis_complications or ''"/>
+                                    <td t-esc="l.procedures or ''"/>
+                                    <td t-esc="l.prescriptions or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
