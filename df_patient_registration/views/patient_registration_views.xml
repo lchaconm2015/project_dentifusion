@@ -101,9 +101,12 @@
                     </group>
 
                     <group string="D. Antecedentes patológicos personales">
-                        <group col="2">
+                        <group>
+                            <field name="personal_no_refiere"/>
+                        </group>
+
+                        <group col="2" attrs="{'invisible': [('personal_no_refiere', '=', True)]}">
                             <group>
-                                <field name="personal_no_refiere"/>
                                 <field name="personal_antibiotic_allergy"/>
                                 <field name="personal_anesthesia_allergy"/>
                                 <field name="personal_hemorrhages"/>
@@ -118,7 +121,7 @@
                                 <field name="personal_other"/>
                             </group>
                         </group>
-                        <field name="personal_background_notes"/>
+                        <field name="personal_background_notes" attrs="{'invisible': [('personal_no_refiere', '=', True)]}"/>
                     </group>
 
                     <group string="E. Antecedentes patológicos familiares">
@@ -179,6 +182,20 @@
                                domain="[('mimetype', 'ilike', 'image/%')]"
                                options="{'no_create': True}"/>
                     </group>
+
+                    <notebook>
+                        <page string="P. Tratamiento">
+                            <field name="treatment_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="session_number"/>
+                                    <field name="date"/>
+                                    <field name="diagnosis_complications"/>
+                                    <field name="procedures"/>
+                                    <field name="prescriptions"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field

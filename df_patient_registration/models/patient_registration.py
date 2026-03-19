@@ -139,6 +139,11 @@ class DfPatientRegistration(models.Model):
         string="Imágenes del paciente",
         help="Adjunta imágenes relacionadas a la historia clínica (fotografías, radiografías, etc.).",
     )
+    treatment_line_ids = fields.One2many(
+        "df.patient.registration.treatment.line",
+        "patient_id",
+        string="Tratamientos",
+    )
     active = fields.Boolean(default=True)
 
     @api.depends("first_name", "second_name", "first_lastname", "second_lastname")
@@ -288,3 +293,22 @@ class DfPatientRegistration(models.Model):
         # Mantiene trazabilidad con state y además archiva el registro (active=False)
         self.write({"state": "archived", "active": False})
         return True
+
+
+class DfPatientRegistrationTreatmentLine(models.Model):
+    _name = "df.patient.registration.treatment.line"
+    _description = "Líneas de tratamiento del paciente"
+    _order = "date desc, id desc"
+
+    patient_id = fields.Many2one(
+        "df.patient.registration",
+        string="Paciente",
+        required=True,
+        ondelete="cascade",
+        index=True,
+    )
+    session_number = fields.Char(string="No. sesión")
+    date = fields.Date(string="Fecha")
+    diagnosis_complications = fields.Text(string="Diagnósticos y complicaciones")
+    procedures = fields.Text(string="Procedimientos")
+    prescriptions = fields.Text(string="Prescripciones")
