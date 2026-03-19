@@ -96,14 +96,9 @@
     position: relative;
 }
 
-/* Borde principal del tablero dibujado como overlay para evitar “cortes” por layout del form */
+/* Sin borde exterior por ahora (se puede reactivar luego si se necesita) */
 .o_df_odontogram_content_row .o_df_odontogram_board::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    pointer-events: none;
+    content: none;
 }
 
 /* Contenedor del panel: en columna por defecto; al arrastrar se aplica position:fixed por JS (inline) */
