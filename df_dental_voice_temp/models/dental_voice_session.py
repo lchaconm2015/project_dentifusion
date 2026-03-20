@@ -144,8 +144,9 @@ class DentalVoiceSession(models.Model):
         if not self.line_ids:
             raise UserError(_("No hay hallazgos para guardar."))
 
-        # Al cerrar sesión, sincroniza automáticamente al odontograma clínico.
-        self.action_apply_to_odontogram()
+        # No usar action_apply_to_odontogram aquí: abre una acción de ventana
+        # (env.ref + read) y puede fallar por permisos o serialización vía XML-RPC.
+        self._apply_voice_findings_to_odontogram()
         self.state = "done"
         self.active = False
         return True
@@ -161,10 +162,10 @@ class DentalVoiceSession(models.Model):
                 return rec
         return patient.search([("display_name", "ilike", self.patient_name)], limit=1)
 
-    def action_apply_to_odontogram(self):
+    def _apply_voice_findings_to_odontogram(self):
         """
-        Aplica hallazgos de la sesión de voz al odontograma del paciente
-        después de la revisión clínica del médico.
+        Aplica hallazgos al odontograma (solo datos). Sin abrir vistas.
+        Usado al guardar por voz (XML-RPC) y reutilizado por el botón en UI.
         """
         self.ensure_one()
         if not self.line_ids:
@@ -211,4 +212,12 @@ class DentalVoiceSession(models.Model):
             odo_line.write(vals)
 
         odontogram.action_load_chart_from_lines()
+        return patient
+
+    def action_apply_to_odontogram(self):
+        """
+        Aplica hallazgos de la sesión de voz al odontograma del paciente
+        después de la revisión clínica del médico.
+        """
+        patient = self._apply_voice_findings_to_odontogram()
         return patient.action_open_odontogram()
