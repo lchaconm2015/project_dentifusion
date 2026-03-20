@@ -51,6 +51,7 @@
                         <group string="Alexa / paciente">
                             <field name="alexa_session_id" readonly="1"/>
                             <field name="patient_name"/>
+                            <field name="patient_id"/>
                             <field name="partner_id"/>
                             <field name="started_at"/>
                             <field name="active"/>

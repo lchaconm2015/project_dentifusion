@@ -23,6 +23,7 @@ class DentalVoiceSession(models.Model):
     active = fields.Boolean(default=True)
     alexa_session_id = fields.Char(string="Alexa Session ID", index=True, tracking=True)
     patient_name = fields.Char(string="Paciente", required=True, tracking=True)
+    patient_id = fields.Many2one("df.patient.registration", string="Ficha clínica", tracking=True)
     partner_id = fields.Many2one("res.partner", string="Paciente relacionado", tracking=True)
     started_at = fields.Datetime(string="Inicio", default=fields.Datetime.now, tracking=True)
     state = fields.Selection(
@@ -120,6 +121,8 @@ class DentalVoiceSession(models.Model):
 
     def _find_patient_registration(self):
         self.ensure_one()
+        if self.patient_id:
+            return self.patient_id
         patient = self.env["df.patient.registration"]
         if self.partner_id:
             rec = patient.search([("partner_id", "=", self.partner_id.id)], limit=1)
