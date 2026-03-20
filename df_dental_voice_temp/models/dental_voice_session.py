@@ -2,17 +2,18 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
-class DentalVoiceSessionWizard(models.TransientModel):
-    _name = "dental.voice.session.wizard"
-    _description = "Sesión temporal de odontograma por voz"
+class DentalVoiceSession(models.Model):
+    _name = "dental.voice.session"
+    _description = "Sesión de odontograma por voz (Alexa)"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "create_date desc"
 
-    name = fields.Char(string="Referencia", default=lambda self: _("Nueva sesión"))
+    name = fields.Char(string="Referencia", default=lambda self: _("Nueva sesión"), tracking=True)
     active = fields.Boolean(default=True)
-    alexa_session_id = fields.Char(string="Alexa Session ID", index=True)
-    patient_name = fields.Char(string="Paciente", required=True)
-    partner_id = fields.Many2one("res.partner", string="Paciente relacionado")
-    started_at = fields.Datetime(string="Inicio", default=fields.Datetime.now)
+    alexa_session_id = fields.Char(string="Alexa Session ID", index=True, tracking=True)
+    patient_name = fields.Char(string="Paciente", required=True, tracking=True)
+    partner_id = fields.Many2one("res.partner", string="Paciente relacionado", tracking=True)
+    started_at = fields.Datetime(string="Inicio", default=fields.Datetime.now, tracking=True)
     state = fields.Selection(
         [
             ("draft", "Borrador"),
@@ -22,10 +23,11 @@ class DentalVoiceSessionWizard(models.TransientModel):
         ],
         default="draft",
         string="Estado",
+        tracking=True,
     )
 
     line_ids = fields.One2many(
-        "dental.voice.session.line.wizard",
+        "dental.voice.session.line",
         "session_id",
         string="Hallazgos",
     )
@@ -62,7 +64,6 @@ class DentalVoiceSessionWizard(models.TransientModel):
     def action_start_session(self):
         for rec in self:
             rec.state = "in_progress"
-        # XML-RPC debe recibir un valor serializable (None suele fallar al codificar la respuesta).
         return True
 
     def action_register_finding(self, tooth_code, finding, surface=False, raw_payload=False):
@@ -72,7 +73,7 @@ class DentalVoiceSessionWizard(models.TransientModel):
 
         next_sequence = max(self.line_ids.mapped("sequence") or [0]) + 1
 
-        self.env["dental.voice.session.line.wizard"].create(
+        self.env["dental.voice.session.line"].create(
             {
                 "session_id": self.id,
                 "sequence": next_sequence,
@@ -96,10 +97,7 @@ class DentalVoiceSessionWizard(models.TransientModel):
         return True
 
     def action_save_session(self):
-        """
-        Aquí luego puedes convertir la sesión temporal en registros permanentes,
-        por ejemplo en dental.odontogram y dental.odontogram.line.
-        """
+        """Marca la sesión como guardada (registro persistente; no se borra por vacuum)."""
         self.ensure_one()
 
         if not self.line_ids:
@@ -108,4 +106,3 @@ class DentalVoiceSessionWizard(models.TransientModel):
         self.state = "done"
         self.active = False
         return True
-

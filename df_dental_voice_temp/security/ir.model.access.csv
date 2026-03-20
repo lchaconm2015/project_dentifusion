@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_dental_voice_session_wizard_user,dental.voice.session.wizard usuario,model_dental_voice_session_wizard,base.group_user,1,1,1,1
-access_dental_voice_session_line_wizard_user,dental.voice.session.line.wizard usuario,model_dental_voice_session_line_wizard,base.group_user,1,1,1,1
+access_dental_voice_session_user,dental.voice.session usuario,model_dental_voice_session,base.group_user,1,1,1,1
+access_dental_voice_session_line_user,dental.voice.session.line usuario,model_dental_voice_session_line,base.group_user,1,1,1,1

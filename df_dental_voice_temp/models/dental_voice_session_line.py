@@ -1,16 +1,17 @@
 from odoo import fields, models
 
 
-class DentalVoiceSessionLineWizard(models.TransientModel):
-    _name = "dental.voice.session.line.wizard"
-    _description = "Líneas temporales de hallazgos odontológicos"
+class DentalVoiceSessionLine(models.Model):
+    _name = "dental.voice.session.line"
+    _description = "Líneas de hallazgos odontológicos (voz / Alexa)"
     _order = "sequence, id"
 
     session_id = fields.Many2one(
-        "dental.voice.session.wizard",
+        "dental.voice.session",
         string="Sesión",
         required=True,
         ondelete="cascade",
+        index=True,
     )
     sequence = fields.Integer(default=10)
 
@@ -81,4 +82,3 @@ class DentalVoiceSessionLineWizard(models.TransientModel):
     )
 
     raw_payload = fields.Text(string="Payload crudo Alexa")
-
