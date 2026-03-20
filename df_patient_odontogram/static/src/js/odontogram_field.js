@@ -1,8 +1,12 @@
 /** @odoo-module **/
 
-import { Component, useState, useRef } from "@odoo/owl";
+import { Component, useState, useRef, onMounted, onWillUnmount, onWillUpdateProps } from "@odoo/owl";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
+
+/** Intervalo para traer chart_data del servidor (p. ej. actualización por voz / otro cliente). */
+const SERVER_SYNC_INTERVAL_MS = 4000;
 
 const PERMANENT_UPPER_LEFT = ["18", "17", "16", "15", "14", "13", "12", "11"];
 const PERMANENT_UPPER_RIGHT = ["21", "22", "23", "24", "25", "26", "27", "28"];
@@ -44,6 +48,24 @@ function parsePayload(value) {
     return payload;
 }
 
+/**
+ * Valor crudo del campo: el web client actual pasa `record`, no `value`.
+ */
+function getRecordFieldValue(props) {
+    const fromRecord = props.record?.data?.[props.name];
+    if (fromRecord !== undefined && fromRecord !== false) {
+        return typeof fromRecord === "string" ? fromRecord : "";
+    }
+    if (fromRecord === false) {
+        return "";
+    }
+    const v = props.value;
+    if (v !== undefined && v !== null) {
+        return String(v);
+    }
+    return "";
+}
+
 export class OdontogramField extends Component {
     static template = "df_patient_odontogram.OdontogramField";
     static props = {
@@ -51,6 +73,8 @@ export class OdontogramField extends Component {
     };
 
     setup() {
+        this.orm = useService("orm");
+
         // Refs OWL (no this.refs): permiten acceder a inputs y al contenedor del panel
         this.inspectorWrapperRef = useRef("inspectorWrapperRef");
         this.mobilityRef = useRef("mobilityRef");
@@ -58,18 +82,75 @@ export class OdontogramField extends Component {
         this.notesRef = useRef("notesRef");
 
         this.state = useState({
-            payload: parsePayload(this.props.value),
+            payload: parsePayload(getRecordFieldValue(this.props)),
             currentToothCode: "11",
             panelPosition: null, // null = en columna lateral; { left, top } = posición flotante arrastrable
             dragStart: null,
         });
         this._boundDragMove = this._onPanelDragMove.bind(this);
         this._boundDragEnd = this._onPanelDragEnd.bind(this);
+
+        onWillUpdateProps((nextProps) => {
+            const nextVal = getRecordFieldValue(nextProps);
+            const curVal = getRecordFieldValue(this.props);
+            if (nextVal !== curVal) {
+                this.state.payload = parsePayload(nextVal);
+            }
+        });
+
+        this._pollTimer = null;
+        this._onVisibilityChange = this._onVisibilityChange.bind(this);
+        onMounted(() => {
+            this._pollTimer = setInterval(() => {
+                this._syncChartDataFromServer();
+            }, SERVER_SYNC_INTERVAL_MS);
+            document.addEventListener("visibilitychange", this._onVisibilityChange);
+        });
+        onWillUnmount(() => {
+            if (this._pollTimer) {
+                clearInterval(this._pollTimer);
+                this._pollTimer = null;
+            }
+            document.removeEventListener("visibilitychange", this._onVisibilityChange);
+        });
     }
 
-    onWillUpdateProps(nextProps) {
-        if (nextProps.value !== this.props.value) {
-            this.state.payload = parsePayload(nextProps.value);
+    _onVisibilityChange() {
+        if (!document.hidden) {
+            this._syncChartDataFromServer();
+        }
+    }
+
+    /**
+     * Si el registro en BD tiene otro chart_data (p. ej. Alexa guardó), recarga el registro en el formulario.
+     * No pisa cambios locales: solo corre si el formulario no está sucio.
+     */
+    async _syncChartDataFromServer() {
+        const record = this.props.record;
+        const fieldName = this.props.name;
+        if (!record?.resId || document.hidden) {
+            return;
+        }
+        try {
+            if (await record.isDirty()) {
+                return;
+            }
+            const rows = await this.orm.read(record.resModel, [record.resId], [fieldName], {
+                context: record.context,
+            });
+            if (!rows?.length) {
+                return;
+            }
+            const remote = rows[0][fieldName] || "";
+            const local = getRecordFieldValue(this.props);
+            if (remote === local) {
+                return;
+            }
+            await record.load();
+            this.state.payload = parsePayload(getRecordFieldValue(this.props));
+        } catch (e) {
+            // Evitar ruido si pérdida de red o permisos
+            console.debug("df_odontogram: sincronización desde servidor omitida", e);
         }
     }
 
@@ -138,11 +219,20 @@ export class OdontogramField extends Component {
 
     async _updateValue(rerender = true) {
         const newValue = JSON.stringify(this.payload);
-        if (this.props.update && newValue !== (this.props.value || "")) {
+        const current = getRecordFieldValue(this.props);
+        if (newValue === current) {
+            if (rerender) {
+                this.state.payload = parsePayload(newValue);
+            }
+            return;
+        }
+        if (this.props.update) {
             if (this.props.setDirty) {
                 this.props.setDirty(true);
             }
             await this.props.update(newValue);
+        } else if (this.props.record?.update) {
+            await this.props.record.update({ [this.props.name]: newValue });
         }
         if (rerender) {
             this.state.payload = parsePayload(newValue);

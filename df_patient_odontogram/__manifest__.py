@@ -1,6 +1,6 @@
 {
     "name": "DF Patient Odontogram",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "summary": "Odontograma interactivo para pacientes",
     "category": "Healthcare",
     "author": "LICSYST",
