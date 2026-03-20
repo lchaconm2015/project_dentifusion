@@ -46,6 +46,35 @@ class DentalVoiceSession(models.Model):
 
     summary_text = fields.Text(string="Resumen", compute="_compute_summary_text")
 
+    @api.onchange("patient_id")
+    def _onchange_patient_id(self):
+        for rec in self:
+            if rec.patient_id:
+                rec.patient_name = rec.patient_id.display_name or rec.patient_name
+                rec.partner_id = rec.patient_id.partner_id.id or rec.partner_id
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            patient_id = vals.get("patient_id")
+            if patient_id:
+                patient = self.env["df.patient.registration"].browse(patient_id)
+                if patient.exists():
+                    vals.setdefault("patient_name", patient.display_name or "")
+                    vals.setdefault("partner_id", patient.partner_id.id or False)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "patient_id" in vals:
+            for rec in self.filtered("patient_id"):
+                update_vals = {}
+                if rec.patient_id.display_name:
+                    update_vals["patient_name"] = rec.patient_id.display_name
+                update_vals["partner_id"] = rec.patient_id.partner_id.id or False
+                super(DentalVoiceSession, rec).write(update_vals)
+        return res
+
     @api.depends("line_ids", "line_ids.tooth_code", "line_ids.surface", "line_ids.finding")
     def _compute_summary_text(self):
         for rec in self:
@@ -109,12 +138,14 @@ class DentalVoiceSession(models.Model):
         return True
 
     def action_save_session(self):
-        """Marca la sesión como guardada (registro persistente; no se borra por vacuum)."""
+        """Guarda sesión y aplica hallazgos al odontograma del paciente."""
         self.ensure_one()
 
         if not self.line_ids:
             raise UserError(_("No hay hallazgos para guardar."))
 
+        # Al cerrar sesión, sincroniza automáticamente al odontograma clínico.
+        self.action_apply_to_odontogram()
         self.state = "done"
         self.active = False
         return True
