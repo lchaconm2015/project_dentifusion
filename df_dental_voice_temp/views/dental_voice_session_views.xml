@@ -31,6 +31,9 @@
                     <button name="action_start_session" type="object" string="Iniciar sesión"
                             class="btn-primary"
                             attrs="{'invisible': [('state', 'not in', ('draft',))]}"/>
+                    <button name="action_apply_to_odontogram" type="object" string="Actualizar odontograma"
+                            class="btn-secondary"
+                            attrs="{'invisible': [('line_ids', '=', False)]}"/>
                     <button name="action_save_session" type="object" string="Marcar como guardada"
                             class="btn-secondary"
                             attrs="{'invisible': [('state', 'in', ('done', 'cancel'))]}"/>
