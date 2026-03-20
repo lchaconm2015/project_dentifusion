@@ -62,6 +62,8 @@ class DentalVoiceSessionWizard(models.TransientModel):
     def action_start_session(self):
         for rec in self:
             rec.state = "in_progress"
+        # XML-RPC debe recibir un valor serializable (None suele fallar al codificar la respuesta).
+        return True
 
     def action_register_finding(self, tooth_code, finding, surface=False, raw_payload=False):
         self.ensure_one()
@@ -83,6 +85,7 @@ class DentalVoiceSessionWizard(models.TransientModel):
 
         if self.state == "draft":
             self.state = "in_progress"
+        return True
 
     def action_delete_last(self):
         self.ensure_one()
@@ -90,6 +93,7 @@ class DentalVoiceSessionWizard(models.TransientModel):
         if not last_line:
             raise UserError(_("No hay registros para borrar."))
         last_line.unlink()
+        return True
 
     def action_save_session(self):
         """
