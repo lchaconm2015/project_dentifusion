@@ -1,0 +1,26 @@
+{
+    "name": "DF Dental Encounter",
+    "version": "16.0.1.0.0",
+    "summary": "Atención clínica odontológica (encuentro / consulta)",
+    "category": "Healthcare",
+    "author": "LICSYST",
+    "website": "https://www.licsyst.com",
+    "license": "LGPL-3",
+    "depends": [
+        "df_dental_appointment",
+        "df_patient_registration",
+    ],
+    "data": [
+        "security/dental_encounter_security.xml",
+        "security/ir.model.access.csv",
+        "data/sequences.xml",
+        "views/dental_encounter_diagnosis_views.xml",
+        "views/dental_encounter_procedure_views.xml",
+        "views/dental_encounter_views.xml",
+        "views/dental_appointment_views.xml",
+        "views/dental_encounter_menus.xml",
+        "views/patient_registration_views.xml",
+    ],
+    "installable": True,
+    "application": False,
+}

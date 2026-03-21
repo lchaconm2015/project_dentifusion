@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_appointment_form_encounter" model="ir.ui.view">
+        <field name="name">df.dental.appointment.form.encounter</field>
+        <field name="model">df.dental.appointment</field>
+        <field name="inherit_id" ref="df_dental_appointment.view_df_dental_appointment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_create_encounter" string="Crear atención" type="object" class="btn-secondary"
+                        attrs="{'invisible': ['|', ('has_encounter', '=', True), ('state', 'in', ('draft', 'cancelled', 'no_show', 'done'))]}"/>
+                <button name="action_open_encounter" string="Abrir atención" type="object" class="btn-primary"
+                        attrs="{'invisible': [('has_encounter', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//group[@string='Notas']" position="after">
+                <group string="Trazabilidad clínica">
+                    <field name="has_encounter" invisible="1"/>
+                    <field name="encounter_id" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

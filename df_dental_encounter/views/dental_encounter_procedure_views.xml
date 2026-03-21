@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_encounter_procedure_tree" model="ir.ui.view">
+        <field name="name">df.dental.encounter.procedure.tree</field>
+        <field name="model">df.dental.encounter.procedure</field>
+        <field name="arch" type="xml">
+            <tree string="Procedimientos" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="procedure_code"/>
+                <field name="procedure_name"/>
+                <field name="tooth_code"/>
+                <field name="surface_codes"/>
+                <field name="status"/>
+                <field name="dentist_id"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

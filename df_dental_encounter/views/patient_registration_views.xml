@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_patient_registration_form_dental_encounter" model="ir.ui.view">
+        <field name="name">df.patient.registration.form.dental.encounter</field>
+        <field name="model">df.patient.registration</field>
+        <field name="inherit_id" ref="df_patient_registration.view_df_patient_registration_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object"
+                        name="action_open_dental_encounters"
+                        class="oe_stat_button"
+                        icon="fa-stethoscope">
+                    <field name="dental_encounter_count" string="Atenciones" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

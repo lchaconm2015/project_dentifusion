@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_encounter_diagnosis_tree" model="ir.ui.view">
+        <field name="name">df.dental.encounter.diagnosis.tree</field>
+        <field name="model">df.dental.encounter.diagnosis</field>
+        <field name="arch" type="xml">
+            <tree string="Diagnósticos" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="diagnosis_type"/>
+                <field name="tooth_code"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

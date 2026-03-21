@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_df_dental_specialty_receptionist,df.dental.specialty receptionist,model_df_dental_specialty,group_df_dental_receptionist,1,1,1,0
+access_df_dental_specialty_dentist,df.dental.specialty dentist,model_df_dental_specialty,group_df_dental_dentist,1,0,0,0
+access_df_dental_specialty_manager,df.dental.specialty manager,model_df_dental_specialty,group_df_dental_manager,1,1,1,1
+access_df_dental_room_receptionist,df.dental.room receptionist,model_df_dental_room,group_df_dental_receptionist,1,1,1,0
+access_df_dental_room_dentist,df.dental.room dentist,model_df_dental_room,group_df_dental_dentist,1,0,0,0
+access_df_dental_room_manager,df.dental.room manager,model_df_dental_room,group_df_dental_manager,1,1,1,1
+access_df_dental_chair_receptionist,df.dental.chair receptionist,model_df_dental_chair,group_df_dental_receptionist,1,1,1,0
+access_df_dental_chair_dentist,df.dental.chair dentist,model_df_dental_chair,group_df_dental_dentist,1,0,0,0
+access_df_dental_chair_manager,df.dental.chair manager,model_df_dental_chair,group_df_dental_manager,1,1,1,1
+access_df_dental_appointment_type_receptionist,df.dental.appointment.type receptionist,model_df_dental_appointment_type,group_df_dental_receptionist,1,1,1,0
+access_df_dental_appointment_type_dentist,df.dental.appointment.type dentist,model_df_dental_appointment_type,group_df_dental_dentist,1,0,0,0
+access_df_dental_appointment_type_manager,df.dental.appointment.type manager,model_df_dental_appointment_type,group_df_dental_manager,1,1,1,1
+access_df_dental_appointment_receptionist,df.dental.appointment receptionist,model_df_dental_appointment,group_df_dental_receptionist,1,1,1,0
+access_df_dental_appointment_dentist,df.dental.appointment dentist,model_df_dental_appointment,group_df_dental_dentist,1,1,1,0
+access_df_dental_appointment_manager,df.dental.appointment manager,model_df_dental_appointment,group_df_dental_manager,1,1,1,1

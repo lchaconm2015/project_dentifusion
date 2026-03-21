@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_specialty_tree" model="ir.ui.view">
+        <field name="name">df.dental.specialty.tree</field>
+        <field name="model">df.dental.specialty</field>
+        <field name="arch" type="xml">
+            <tree string="Especialidades">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_df_dental_specialty_form" model="ir.ui.view">
+        <field name="name">df.dental.specialty.form</field>
+        <field name="model">df.dental.specialty</field>
+        <field name="arch" type="xml">
+            <form string="Especialidad dental">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_dental_room_tree" model="ir.ui.view">
+        <field name="name">df.dental.room.tree</field>
+        <field name="model">df.dental.room</field>
+        <field name="arch" type="xml">
+            <tree string="Consultorios">
+                <field name="name"/>
+                <field name="location"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_df_dental_room_form" model="ir.ui.view">
+        <field name="name">df.dental.room.form</field>
+        <field name="model">df.dental.room</field>
+        <field name="arch" type="xml">
+            <form string="Consultorio">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="location"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_dental_chair_tree" model="ir.ui.view">
+        <field name="name">df.dental.chair.tree</field>
+        <field name="model">df.dental.chair</field>
+        <field name="arch" type="xml">
+            <tree string="Sillones">
+                <field name="name"/>
+                <field name="room_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_df_dental_chair_form" model="ir.ui.view">
+        <field name="name">df.dental.chair.form</field>
+        <field name="model">df.dental.chair</field>
+        <field name="arch" type="xml">
+            <form string="Sillón">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="room_id"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_dental_appointment_type_tree" model="ir.ui.view">
+        <field name="name">df.dental.appointment.type.tree</field>
+        <field name="model">df.dental.appointment.type</field>
+        <field name="arch" type="xml">
+            <tree string="Tipos de cita">
+                <field name="name"/>
+                <field name="default_duration_minutes"/>
+                <field name="specialty_id"/>
+                <field name="color"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_df_dental_appointment_type_form" model="ir.ui.view">
+        <field name="name">df.dental.appointment.type.form</field>
+        <field name="model">df.dental.appointment.type</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de cita">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="default_duration_minutes"/>
+                        <field name="specialty_id"/>
+                        <field name="color"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_df_dental_specialty" model="ir.actions.act_window">
+        <field name="name">Especialidades</field>
+        <field name="res_model">df.dental.specialty</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_df_dental_room" model="ir.actions.act_window">
+        <field name="name">Consultorios</field>
+        <field name="res_model">df.dental.room</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_df_dental_chair" model="ir.actions.act_window">
+        <field name="name">Sillones</field>
+        <field name="res_model">df.dental.chair</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_df_dental_appointment_type" model="ir.actions.act_window">
+        <field name="name">Tipos de cita</field>
+        <field name="res_model">df.dental.appointment.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

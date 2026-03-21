@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_encounter_tree" model="ir.ui.view">
+        <field name="name">df.dental.encounter.tree</field>
+        <field name="model">df.dental.encounter</field>
+        <field name="arch" type="xml">
+            <tree string="Encuentros" decoration-muted="state=='cancelled'">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <field name="consultation_type"/>
+                <field name="state"/>
+                <field name="appointment_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_df_dental_encounter_form" model="ir.ui.view">
+        <field name="name">df.dental.encounter.form</field>
+        <field name="model">df.dental.encounter</field>
+        <field name="arch" type="xml">
+            <form string="Atención clínica">
+                <header>
+                    <button name="action_start" string="Iniciar consulta" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_done" string="Finalizar" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', 'not in', ('draft', 'in_progress'))]}"/>
+                    <button name="action_cancel" string="Cancelar" type="object" class="btn-secondary"
+                            attrs="{'invisible': [('state', 'in', ('done', 'cancelled'))]}"/>
+                    <button name="action_reset_draft" string="Reabrir" type="object" groups="df_dental_encounter.group_df_dental_clinical_manager"
+                            attrs="{'invisible': [('state', 'not in', ('done', 'cancelled'))]}"/>
+                    <button name="action_sign" string="Firmar" type="object" class="btn-secondary"
+                            attrs="{'invisible': ['|', ('state', '!=', 'done'), ('is_signed', '=', True)]}"/>
+                    <button name="action_open_patient" string="Paciente" type="object" class="btn-secondary"/>
+                    <button name="action_open_appointment" string="Cita" type="object" class="btn-secondary"
+                            attrs="{'invisible': [('appointment_id', '=', False)]}"/>
+                    <button name="action_open_odontogram" string="Odontograma" type="object" class="btn-secondary"/>
+                    <button name="action_create_treatment_plan" string="Plan tratamiento" type="object" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Cabecera">
+                            <field name="patient_id" options="{'no_create_edit': True}"/>
+                            <field name="dentist_id"/>
+                            <field name="assistant_id"/>
+                            <field name="appointment_id" options="{'no_create_edit': True}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Fechas">
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="duration_minutes" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="General" name="general">
+                            <group>
+                                <field name="consultation_type"/>
+                                <field name="specialty_id"/>
+                            </group>
+                            <group string="Motivo de consulta">
+                                <field name="chief_complaint" nolabel="1" colspan="2"/>
+                            </group>
+                            <group string="Nota clínica">
+                                <field name="clinical_note" nolabel="1" colspan="2" widget="html"/>
+                            </group>
+                        </page>
+                        <page string="SOAP" name="soap">
+                            <group>
+                                <field name="subjective_note" colspan="2" nolabel="1"/>
+                                <field name="objective_note" colspan="2" nolabel="1"/>
+                                <field name="assessment_note" colspan="2" nolabel="1"/>
+                                <field name="plan_note" colspan="2" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Diagnósticos" name="diagnosis">
+                            <field name="diagnosis_ids" context="{'default_encounter_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="diagnosis_type"/>
+                                    <field name="tooth_code"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Procedimientos" name="procedures">
+                            <field name="procedure_ids" context="{'default_encounter_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="procedure_code"/>
+                                    <field name="procedure_name"/>
+                                    <field name="tooth_code"/>
+                                    <field name="surface_codes"/>
+                                    <field name="status"/>
+                                    <field name="dentist_id"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Indicaciones y cierre" name="closure">
+                            <group>
+                                <field name="prescription_note"/>
+                                <field name="recommendation_note"/>
+                                <field name="next_visit_note"/>
+                                <field name="closure_summary"/>
+                            </group>
+                            <group string="Firma">
+                                <field name="is_signed" readonly="1"/>
+                                <field name="signed_by" readonly="1"/>
+                                <field name="signed_datetime" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Voz e IA" name="voice_ai">
+                            <group>
+                                <field name="data_source"/>
+                                <field name="transcription_status"/>
+                            </group>
+                            <group>
+                                <field name="voice_transcript" colspan="2" nolabel="1"/>
+                                <field name="ai_summary" colspan="2" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_dental_encounter_search" model="ir.ui.view">
+        <field name="name">df.dental.encounter.search</field>
+        <field name="model">df.dental.encounter</field>
+        <field name="arch" type="xml">
+            <search string="Encuentros">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="dentist_id"/>
+                <filter name="filter_today" string="Hoy" domain="[('encounter_date', '=', context_today())]"/>
+                <filter name="filter_my" string="Mis consultas" domain="[('dentist_id', '=', uid)]"/>
+                <filter name="filter_open" string="Abiertos" domain="[('state', 'in', ('draft', 'in_progress'))]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_dentist" string="Odontólogo" context="{'group_by': 'dentist_id'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_df_dental_encounter" model="ir.actions.act_window">
+        <field name="name">Encuentros clínicos</field>
+        <field name="res_model">df.dental.encounter</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_df_dental_encounter_my" model="ir.actions.act_window">
+        <field name="name">Mis consultas</field>
+        <field name="res_model">df.dental.encounter</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('dentist_id', '=', uid)]</field>
+    </record>
+
+    <record id="action_df_dental_encounter_today" model="ir.actions.act_window">
+        <field name="name">Consultas de hoy</field>
+        <field name="res_model">df.dental.encounter</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('encounter_date', '=', context_today())]</field>
+    </record>
+</odoo>

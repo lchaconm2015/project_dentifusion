@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_df_dental_clinical" name="Atención clínica" parent="df_dental_appointment.menu_df_dental_root" sequence="20"/>
+
+    <menuitem id="menu_df_dental_encounter_main" name="Encuentros clínicos" parent="menu_df_dental_clinical"
+              action="action_df_dental_encounter" sequence="10"/>
+    <menuitem id="menu_df_dental_encounter_my" name="Mis consultas" parent="menu_df_dental_clinical"
+              action="action_df_dental_encounter_my" sequence="20"/>
+    <menuitem id="menu_df_dental_encounter_today" name="Consultas de hoy" parent="menu_df_dental_clinical"
+              action="action_df_dental_encounter_today" sequence="30"/>
+</odoo>
