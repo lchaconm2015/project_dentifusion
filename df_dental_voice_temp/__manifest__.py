@@ -3,7 +3,7 @@
     "version": "16.0.4.0.1",
     "summary": "Sesiones persistentes de odontograma por voz (Alexa)",
     "category": "Healthcare",
-    "author": "LICSYST",
+    "author": "lchaconm2015@gmail.com",
     "website": "https://www.licsyst.com",
     "license": "LGPL-3",
     "depends": ["base", "mail", "df_patient_registration", "df_patient_odontogram"],
