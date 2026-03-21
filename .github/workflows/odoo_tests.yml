@@ -1,0 +1,58 @@
+name: Odoo Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'df_patient_registration/**'
+      - '.github/workflows/odoo_tests.yml'
+  workflow_dispatch:
+
+jobs:
+  test_patient_registration:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: test_detifusion
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+        options: >-
+          --health-cmd="pg_isready -U odoo -d test_detifusion"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    container:
+      image: odoo:16.0
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install -y postgresql-client
+
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h postgres -U odoo -d test_detifusion; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
+
+      - name: Run Odoo tests for df_patient_registration
+        run: |
+          odoo -d test_detifusion \
+            --db_host=postgres \
+            --db_port=5432 \
+            --db_user=odoo \
+            --db_password=odoo \
+            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/github/workspace \
+            -i df_patient_registration \
+            --test-enable \
+            --stop-after-init
