@@ -2,7 +2,7 @@
     "name": "DF Dental Appointment",
     "version": "16.0.1.0.0",
     "summary": "Agenda y citas odontológicas con calendario Odoo",
-    "category": "Healthcare1",
+    "category": "Healthcare12",
     "author": "LICSYST",
     "website": "https://www.licsyst.com",
     "license": "LGPL-3",
