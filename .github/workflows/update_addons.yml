@@ -1,0 +1,24 @@
+name: Update Odoo Addons
+
+on:
+  workflow_dispatch:
+    inputs:
+      modules:
+        description: "Modulos a actualizar, separados por comas"
+        required: true
+        default: "df_patient_registration"
+
+jobs:
+  update-addons:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Actualizar addons por SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          port: 22
+          script: |
+            bash /opt/detifusion/scripts/update_addons.sh "${{ github.event.inputs.modules }}"
