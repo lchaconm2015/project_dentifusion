@@ -117,7 +117,8 @@
                                 <field name="personal_other"/>
                             </group>
                         </group>
-                        <field name="personal_observaciones" attrs="{'invisible': [('personal_no_refiere', '=', True)]}"/>
+                        <field name="personal_observaciones"
+                               attrs="{'invisible': [('personal_no_refiere', '=', True)]}"/>
                     </group>
 
                     <group string="E. Antecedentes patológicos familiares">
@@ -192,6 +193,7 @@
                                     <field name="diagnosis_complications"/>
                                     <field name="procedures"/>
                                     <field name="prescriptions"/>
+                                    <field name="cost"/>
                                 </tree>
                             </field>
                         </page>

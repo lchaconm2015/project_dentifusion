@@ -22,15 +22,23 @@
                         <table class="table table-sm table-bordered" style="width:100%; margin-top: 10px;">
                             <tbody>
                                 <tr>
-                                    <td><strong>Estado</strong></td>
+                                    <td>
+                                        <strong>Estado</strong>
+                                    </td>
                                     <td t-esc="dict(o._fields['state'].selection).get(o.state, '')"/>
-                                    <td><strong>Cedula</strong></td>
+                                    <td>
+                                        <strong>Cedula</strong>
+                                    </td>
                                     <td t-esc="o.identification or ''"/>
                                 </tr>
                                 <tr>
-                                    <td><strong>Telefono</strong></td>
+                                    <td>
+                                        <strong>Telefono</strong>
+                                    </td>
                                     <td t-esc="o.phone or ''"/>
-                                    <td><strong>Direccion</strong></td>
+                                    <td>
+                                        <strong>Direccion</strong>
+                                    </td>
                                     <td t-esc="o.address or ''"/>
                                 </tr>
                             </tbody>
@@ -40,25 +48,39 @@
                         <table class="table table-sm table-bordered" style="width:100%;">
                             <tbody>
                                 <tr>
-                                    <td><strong>Institucion</strong></td>
+                                    <td>
+                                        <strong>Institucion</strong>
+                                    </td>
                                     <td t-esc="o.institution_system or ''"/>
-                                    <td><strong>Unicodigo</strong></td>
+                                    <td>
+                                        <strong>Unicodigo</strong>
+                                    </td>
                                     <td t-esc="o.unicodigo or ''"/>
                                 </tr>
                                 <tr>
-                                    <td><strong>Establecimiento</strong></td>
+                                    <td>
+                                        <strong>Establecimiento</strong>
+                                    </td>
                                     <td t-esc="o.health_establishment or ''"/>
-                                    <td><strong>No. Historia Clinica</strong></td>
+                                    <td>
+                                        <strong>No. Historia Clinica</strong>
+                                    </td>
                                     <td t-esc="o.unique_clinical_history_number or ''"/>
                                 </tr>
                                 <tr>
-                                    <td><strong>Paciente</strong></td>
+                                    <td>
+                                        <strong>Paciente</strong>
+                                    </td>
                                     <td colspan="3" t-esc="o.display_name or ''"/>
                                 </tr>
                                 <tr>
-                                    <td><strong>Sexo</strong></td>
+                                    <td>
+                                        <strong>Sexo</strong>
+                                    </td>
                                     <td t-esc="dict(o._fields['sex'].selection).get(o.sex, '') if o.sex else ''"/>
-                                    <td><strong>Edad</strong></td>
+                                    <td>
+                                        <strong>Edad</strong>
+                                    </td>
                                     <td>
                                         <span t-esc="o.age or ''"/>
                                         <span t-esc="dict(o._fields['age_condition'].selection).get(o.age_condition, '') if o.age_condition else ''"/>
@@ -97,15 +119,23 @@
                         <table class="table table-sm table-bordered" style="width:100%;">
                             <tbody>
                                 <tr>
-                                    <td><strong>Temperatura</strong></td>
+                                    <td>
+                                        <strong>Temperatura</strong>
+                                    </td>
                                     <td t-esc="o.temperature or ''"/>
-                                    <td><strong>Pulso</strong></td>
+                                    <td>
+                                        <strong>Pulso</strong>
+                                    </td>
                                     <td t-esc="o.pulse or ''"/>
                                 </tr>
                                 <tr>
-                                    <td><strong>Frecuencia respiratoria</strong></td>
+                                    <td>
+                                        <strong>Frecuencia respiratoria</strong>
+                                    </td>
                                     <td t-esc="o.respiratory_rate or ''"/>
-                                    <td><strong>Presion arterial</strong></td>
+                                    <td>
+                                        <strong>Presion arterial</strong>
+                                    </td>
                                     <td t-esc="o.blood_pressure or ''"/>
                                 </tr>
                             </tbody>
@@ -120,6 +150,7 @@
                                     <th>Diagnosticos y complicaciones</th>
                                     <th>Procedimientos</th>
                                     <th>Prescripciones</th>
+                                    <th>Costo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,6 +160,7 @@
                                     <td t-esc="l.diagnosis_complications or ''"/>
                                     <td t-esc="l.procedures or ''"/>
                                     <td t-esc="l.prescriptions or ''"/>
+                                    <td t-esc="l.cost or ''"/>
                                 </tr>
                             </tbody>
                         </table>
