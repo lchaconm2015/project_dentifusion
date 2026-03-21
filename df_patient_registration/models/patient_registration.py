@@ -319,4 +319,4 @@ class DfPatientRegistrationTreatmentLine(models.Model):
     diagnosis_complications = fields.Text(string="Diagnósticos y complicaciones")
     procedures = fields.Text(string="Procedimientos")
     prescriptions = fields.Text(string="Prescripciones")
-    cost = fields = fields.Text(string="Costo")
+    cost  = fields.Text(string="Costo")
