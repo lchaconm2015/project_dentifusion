@@ -2,7 +2,7 @@
     "name": "DF Dental Voice Temp",
     "version": "16.0.4.0.1",
     "summary": "Sesiones persistentes de odontograma por voz (Alexa)",
-    "category": "Healthcare",
+    "category": "Healthcare_test",
     "author": "lchaconm2015@gmail.com",
     "website": "https://www.licsyst.com",
     "license": "LGPL-3",
