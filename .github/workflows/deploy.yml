@@ -1,9 +1,14 @@
-name: Deploy Odoo to DigitalOcean
+name: Deploy Odoo
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'df_patient_registration/**'
+      - 'df_patient_odontogram/**'
+      - 'df_dental_voice_temp/**'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   deploy:
@@ -18,4 +23,4 @@ jobs:
           key: ${{ secrets.DO_SSH_KEY }}
           port: 22
           script: |
-            /opt/detifusion/scripts/deploy.sh
+            bash /opt/detifusion/scripts/deploy.sh
