@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="menu_df_dental_procedure_root" name="Procedimientos clínicos"
-              parent="df_dental_appointment.menu_df_dental_clinical" sequence="50"
+              parent="df_dental_encounter.menu_df_dental_clinical" sequence="50"
               action="action_df_dental_procedure"/>
 </odoo>
