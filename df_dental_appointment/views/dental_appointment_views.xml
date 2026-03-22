@@ -108,8 +108,9 @@
         <field name="name">df.dental.appointment.calendar</field>
         <field name="model">df.dental.appointment</field>
         <field name="arch" type="xml">
+            <!-- Odoo 16: quick_add. Odoo 17+: usar quick_create en su lugar -->
             <calendar string="Agenda dental" date_start="start_datetime" date_stop="end_datetime"
-                      color="dentist_id" mode="week" quick_create="0">
+                      color="dentist_id" mode="week" quick_add="false">
                 <field name="name"/>
                 <field name="patient_id"/>
                 <field name="state"/>
