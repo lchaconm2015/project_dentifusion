@@ -85,7 +85,7 @@
                             <field name="referred_by"/>
                         </group>
                     </group>
-                    <group string="Notas">
+                    <group name="df_dental_appointment_notes" string="Notas">
                         <field name="notes" nolabel="1" colspan="2"/>
                     </group>
                     <group string="Cancelación" attrs="{'invisible': [('state', '!=', 'cancelled')]}">

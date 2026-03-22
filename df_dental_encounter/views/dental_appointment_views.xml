@@ -11,7 +11,7 @@
                 <button name="action_open_encounter" string="Abrir atención" type="object" class="btn-primary"
                         attrs="{'invisible': [('has_encounter', '=', False)]}"/>
             </xpath>
-            <xpath expr="//group[@string='Notas']" position="after">
+            <xpath expr="//group[@name='df_dental_appointment_notes']" position="after">
                 <group string="Trazabilidad clínica">
                     <field name="has_encounter" invisible="1"/>
                     <field name="encounter_id" readonly="1"/>
