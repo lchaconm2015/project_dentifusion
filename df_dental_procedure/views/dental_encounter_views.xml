@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_encounter_form_suite_procedure" model="ir.ui.view">
+        <field name="name">df.dental.encounter.form.suite.procedure</field>
+        <field name="model">df.dental.encounter</field>
+        <field name="inherit_id" ref="df_dental_encounter.view_df_dental_encounter_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_create_suite_procedure" string="Nuevo procedimiento (suite)" type="object" class="btn-secondary"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" name="action_open_suite_procedures" class="oe_stat_button" icon="fa-medkit">
+                    <field name="suite_procedure_count" string="Proc. suite" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

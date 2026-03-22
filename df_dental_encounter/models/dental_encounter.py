@@ -298,6 +298,3 @@ class DentalEncounter(models.Model):
         if hasattr(patient, "action_open_odontogram"):
             return patient.action_open_odontogram()
         raise UserError(_("Instale el módulo de odontograma para abrir la ficha gráfica."))
-
-    def action_create_treatment_plan(self):
-        raise UserError(_("Plan de tratamiento: pendiente de módulo dedicado (fase 2)."))

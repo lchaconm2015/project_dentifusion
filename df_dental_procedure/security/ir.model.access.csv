@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_df_dental_procedure_user,df.dental.procedure user,model_df_dental_procedure,group_df_dental_procedure_user,1,1,1,0
+access_df_dental_procedure_dentist,df.dental.procedure dentist,model_df_dental_procedure,df_dental_appointment.group_df_dental_dentist,1,1,1,0
+access_df_dental_procedure_treatment_user,df.dental.procedure treatment user,model_df_dental_procedure,df_dental_treatment_plan.group_df_dental_treatment_user,1,1,1,0
+access_df_dental_procedure_manager,df.dental.procedure manager,model_df_dental_procedure,group_df_dental_procedure_manager,1,1,1,1

@@ -3,10 +3,11 @@
     <menuitem id="menu_df_dental_root" name="Clínica dental" sequence="55"
               groups="group_df_dental_receptionist,group_df_dental_dentist,group_df_dental_manager"/>
 
-    <menuitem id="menu_df_dental_agenda" name="Agenda" parent="menu_df_dental_root" sequence="10"/>
+    <!-- Acceso directo: listado completo (respeta reglas de registro / odontólogo solo las propias) -->
+    <menuitem id="menu_df_dental_appointment_all" name="Todas las citas" parent="menu_df_dental_root"
+              action="action_df_dental_appointment" sequence="5"/>
 
-    <menuitem id="menu_df_dental_appointment" name="Citas" parent="menu_df_dental_agenda"
-              action="action_df_dental_appointment" sequence="10"/>
+    <menuitem id="menu_df_dental_agenda" name="Agenda" parent="menu_df_dental_root" sequence="10"/>
     <menuitem id="menu_df_dental_calendar" name="Calendario" parent="menu_df_dental_agenda"
               action="action_df_dental_appointment_calendar_only" sequence="20"/>
     <menuitem id="menu_df_dental_today" name="Hoy" parent="menu_df_dental_agenda"

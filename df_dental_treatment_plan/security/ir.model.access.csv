@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_df_dental_treatment_plan_user,df.dental.treatment.plan user,model_df_dental_treatment_plan,group_df_dental_treatment_user,1,1,1,0
+access_df_dental_treatment_plan_dentist,df.dental.treatment.plan dentist,model_df_dental_treatment_plan,df_dental_appointment.group_df_dental_dentist,1,1,1,0
+access_df_dental_treatment_plan_manager,df.dental.treatment.plan manager,model_df_dental_treatment_plan,group_df_dental_treatment_manager,1,1,1,1
+access_df_dental_treatment_plan_line_user,df.dental.treatment.plan.line user,model_df_dental_treatment_plan_line,group_df_dental_treatment_user,1,1,1,0
+access_df_dental_treatment_plan_line_dentist,df.dental.treatment.plan.line dentist,model_df_dental_treatment_plan_line,df_dental_appointment.group_df_dental_dentist,1,1,1,0
+access_df_dental_treatment_plan_line_manager,df.dental.treatment.plan.line manager,model_df_dental_treatment_plan_line,group_df_dental_treatment_manager,1,1,1,1

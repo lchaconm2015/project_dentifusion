@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_treatment_plan_form_procedure" model="ir.ui.view">
+        <field name="name">df.dental.treatment.plan.form.procedure</field>
+        <field name="model">df.dental.treatment.plan</field>
+        <field name="inherit_id" ref="df_dental_treatment_plan.view_df_dental_treatment_plan_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_create_procedures" string="Generar procedimientos" type="object" class="btn-secondary"
+                        attrs="{'invisible': [('state', 'in', ('cancelled', 'rejected', 'draft'))]}"/>
+                <button name="action_open_procedures" string="Ver procedimientos" type="object" class="btn-secondary"/>
+            </xpath>
+            <xpath expr="//field[@name='is_accepted']" position="after">
+                <field name="procedure_count" optional="show" readonly="1"/>
+                <field name="line_progress_percent" optional="hide" readonly="1" string="Avance"/>
+            </xpath>
+            <xpath expr="//page[@name='notes']" position="after">
+                <page string="Procedimientos (ejecución)" name="suite_procedures">
+                    <field name="suite_procedure_ids" readonly="1">
+                        <tree>
+                            <field name="name"/>
+                            <field name="procedure_name"/>
+                            <field name="state"/>
+                            <field name="performed_date"/>
+                            <field name="actual_fee"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

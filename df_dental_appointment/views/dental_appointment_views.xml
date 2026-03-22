@@ -148,9 +148,10 @@
     </record>
 
     <record id="action_df_dental_appointment" model="ir.actions.act_window">
-        <field name="name">Citas</field>
+        <field name="name">Todas las citas</field>
         <field name="res_model">df.dental.appointment</field>
         <field name="view_mode">tree,form,calendar</field>
+        <field name="domain">[]</field>
         <field name="context">{}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Cree una nueva cita odontológica.</p>
