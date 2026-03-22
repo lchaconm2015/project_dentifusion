@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Raíz: nombre y posición más visibles -->
+    <record id="df_dental_appointment.menu_df_dental_root" model="ir.ui.menu">
+        <field name="name">Suite dental</field>
+        <field name="sequence" eval="38"/>
+    </record>
+
+    <!-- Secciones lógicas (solo carpetas) -->
+    <menuitem id="menu_df_suite_agenda" name="Agenda y citas" parent="df_dental_appointment.menu_df_dental_root" sequence="10"/>
+    <menuitem id="menu_df_suite_clinical" name="Atención clínica" parent="df_dental_appointment.menu_df_dental_root" sequence="20"/>
+    <menuitem id="menu_df_suite_patients" name="Pacientes" parent="df_dental_appointment.menu_df_dental_root" sequence="30"/>
+    <menuitem id="menu_df_suite_configuration" name="Configuración clínica" parent="df_dental_appointment.menu_df_dental_root" sequence="90"/>
+
+    <!-- Acceso directo a fichas desde la suite -->
+    <menuitem id="menu_df_suite_patient_registration"
+              name="Fichas de pacientes"
+              parent="df_dental_suite.menu_df_suite_patients"
+              action="df_patient_registration.action_df_patient_registration"
+              sequence="10"/>
+
+    <!-- Reorganizar: Agenda -->
+    <record id="df_dental_appointment.menu_df_dental_appointment_all" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_agenda"/>
+        <field name="sequence" eval="10"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_calendar" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_agenda"/>
+        <field name="sequence" eval="20"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_today" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_agenda"/>
+        <field name="sequence" eval="30"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_my" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_agenda"/>
+        <field name="sequence" eval="40"/>
+    </record>
+
+    <!-- Reorganizar: Atención clínica -->
+    <record id="df_dental_encounter.menu_df_dental_encounter_main" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_clinical"/>
+        <field name="sequence" eval="10"/>
+    </record>
+    <record id="df_dental_encounter.menu_df_dental_encounter_my" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_clinical"/>
+        <field name="sequence" eval="20"/>
+    </record>
+    <record id="df_dental_encounter.menu_df_dental_encounter_today" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_clinical"/>
+        <field name="sequence" eval="30"/>
+    </record>
+    <record id="df_dental_treatment_plan.menu_df_dental_treatment_plan_root" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_clinical"/>
+        <field name="sequence" eval="40"/>
+    </record>
+    <record id="df_dental_procedure.menu_df_dental_procedure_root" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_clinical"/>
+        <field name="sequence" eval="50"/>
+    </record>
+
+    <!-- Reorganizar: Configuración (catálogos bajo la nueva carpeta) -->
+    <record id="df_dental_appointment.menu_df_dental_specialty" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_configuration"/>
+        <field name="sequence" eval="10"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_room" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_configuration"/>
+        <field name="sequence" eval="20"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_chair" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_configuration"/>
+        <field name="sequence" eval="30"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_appointment_type" model="ir.ui.menu">
+        <field name="parent_id" ref="df_dental_suite.menu_df_suite_configuration"/>
+        <field name="sequence" eval="40"/>
+    </record>
+
+    <!-- Carpetas intermedias ya vacías / redundantes -->
+    <record id="df_dental_appointment.menu_df_dental_agenda" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="df_dental_encounter.menu_df_dental_clinical" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="df_dental_appointment.menu_df_dental_config" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+</odoo>
