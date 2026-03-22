@@ -114,6 +114,18 @@ class DentalAppointment(models.Model):
         required=True,
         tracking=True,
     )
+    # Tres columnas lógicas en Kanban (derivadas de state; no arrastrar entre columnas)
+    kanban_lane = fields.Selection(
+        [
+            ("new", "Nuevas"),
+            ("confirmed", "Confirmadas"),
+            ("closed", "Canceladas / finalizadas"),
+        ],
+        string="Etapa (Kanban)",
+        compute="_compute_kanban_lane",
+        store=True,
+        index=True,
+    )
 
     notes = fields.Text(string="Notas de agenda")
     referred_by = fields.Char(string="Referido por")
@@ -178,6 +190,16 @@ class DentalAppointment(models.Model):
                 ).date()
             else:
                 rec.appointment_date = False
+
+    @api.depends("state")
+    def _compute_kanban_lane(self):
+        for rec in self:
+            if rec.state == "draft":
+                rec.kanban_lane = "new"
+            elif rec.state in ("done", "cancelled", "no_show"):
+                rec.kanban_lane = "closed"
+            else:
+                rec.kanban_lane = "confirmed"
 
     @api.onchange("patient_id")
     def _onchange_patient_id(self):
