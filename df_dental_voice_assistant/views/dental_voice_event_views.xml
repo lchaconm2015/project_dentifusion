@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_voice_event_tree" model="ir.ui.view">
+        <field name="name">df.dental.voice.event.tree</field>
+        <field name="model">df.dental.voice.event</field>
+        <field name="arch" type="xml">
+            <tree string="Eventos de voz">
+                <field name="create_date"/>
+                <field name="session_id"/>
+                <field name="intent"/>
+                <field name="raw_text"/>
+                <field name="execution_status"/>
+                <field name="target_model" optional="hide"/>
+                <field name="confidence_score"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_df_dental_voice_event_form" model="ir.ui.view">
+        <field name="name">df.dental.voice.event.form</field>
+        <field name="model">df.dental.voice.event</field>
+        <field name="arch" type="xml">
+            <form string="Evento de voz">
+                <header>
+                    <button name="action_process" string="Interpretar / procesar" type="object" class="btn-primary"
+                            attrs="{'invisible': [('execution_status', 'not in', ('pending', 'error'))]}"/>
+                    <button name="action_confirm" string="Confirmar ejecución" type="object" class="btn-primary"
+                            attrs="{'invisible': [('execution_status', '!=', 'pending')]}"/>
+                    <button name="action_reject" string="Rechazar" type="object" class="btn-secondary"/>
+                    <button name="action_correct" string="Marcar corregido" type="object" class="btn-secondary"/>
+                    <button name="action_open_target_record" string="Abrir destino" type="object"
+                            attrs="{'invisible': [('target_res_id', '=', 0)]}"/>
+                    <field name="execution_status" widget="statusbar"
+                           statusbar_visible="pending,processed,confirmed,rejected,error"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Origen">
+                            <field name="name" readonly="1"/>
+                            <field name="session_id"/>
+                            <field name="patient_id" readonly="1"/>
+                            <field name="encounter_id"/>
+                            <field name="channel" readonly="1"/>
+                            <field name="source_type"/>
+                        </group>
+                        <group string="Interpretación">
+                            <field name="intent"/>
+                            <field name="confidence_score"/>
+                            <field name="processed_by_user_id"/>
+                            <field name="processed_datetime"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Contenido" name="content">
+                            <group>
+                                <field name="raw_text" colspan="2" nolabel="1"/>
+                                <field name="normalized_text" colspan="2" nolabel="1" readonly="1"/>
+                                <field name="audio_url"/>
+                                <field name="audio_attachment_id"/>
+                            </group>
+                        </page>
+                        <page string="Payload" name="payload">
+                            <field name="parsed_payload" nolabel="1" colspan="2" widget="text"/>
+                        </page>
+                        <page string="Ejecución" name="execution">
+                            <group>
+                                <field name="execution_message" colspan="2" nolabel="1"/>
+                                <field name="target_model"/>
+                                <field name="target_res_id"/>
+                            </group>
+                        </page>
+                        <page string="IA" name="ai">
+                            <group>
+                                <field name="ai_model_name"/>
+                                <field name="ai_summary" colspan="2" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_df_dental_voice_event_search" model="ir.ui.view">
+        <field name="name">df.dental.voice.event.search</field>
+        <field name="model">df.dental.voice.event</field>
+        <field name="arch" type="xml">
+            <search string="Eventos de voz">
+                <field name="session_id"/>
+                <field name="raw_text"/>
+                <field name="intent"/>
+                <filter name="pending" string="Pendientes" domain="[('execution_status', '=', 'pending')]"/>
+                <filter name="errors" string="Con error" domain="[('execution_status', '=', 'error')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_session" string="Sesión" context="{'group_by': 'session_id'}"/>
+                    <filter name="group_intent" string="Intención" context="{'group_by': 'intent'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_df_dental_voice_event" model="ir.actions.act_window">
+        <field name="name">Eventos de voz</field>
+        <field name="res_model">df.dental.voice.event</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_voice_command_rule_tree" model="ir.ui.view">
+        <field name="name">df.dental.voice.command.rule.tree</field>
+        <field name="model">df.dental.voice.command.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Reglas de comando" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active"/>
+                <field name="trigger_text"/>
+                <field name="intent"/>
+                <field name="priority"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_df_dental_voice_command_rule_form" model="ir.ui.view">
+        <field name="name">df.dental.voice.command.rule.form</field>
+        <field name="model">df.dental.voice.command.rule</field>
+        <field name="arch" type="xml">
+            <form string="Regla de comando">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="sequence"/>
+                        <field name="priority"/>
+                        <field name="trigger_text"/>
+                        <field name="intent"/>
+                    </group>
+                    <group string="Notas">
+                        <field name="notes" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_df_dental_voice_command_rule" model="ir.actions.act_window">
+        <field name="name">Reglas de comandos</field>
+        <field name="res_model">df.dental.voice.command.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

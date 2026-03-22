@@ -112,8 +112,7 @@
             <kanban default_group_by="kanban_lane"
                     class="o_kanban_small_column"
                     quick_create="false"
-                    create="true"
-                    records_draggable="0">
+                    create="true">
                 <field name="id"/>
                 <field name="kanban_lane"/>
                 <field name="sequence_code"/>

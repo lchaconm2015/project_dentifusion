@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_dental_encounter_form_inherit_voice" model="ir.ui.view">
+        <field name="name">df.dental.encounter.form.inherit.voice</field>
+        <field name="model">df.dental.encounter</field>
+        <field name="inherit_id" ref="df_dental_encounter.view_df_dental_encounter_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@class='oe_title']" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_open_voice_sessions" type="object" class="oe_stat_button" icon="fa-microphone">
+                        <field name="voice_session_count" widget="statinfo" string="Voz"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//button[@name='action_open_odontogram']" position="after">
+                <button name="action_start_voice_session" string="Sesión voz" type="object" class="btn-secondary"
+                        attrs="{'invisible': [('state', '=', 'cancelled')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

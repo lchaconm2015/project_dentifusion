@@ -8,6 +8,7 @@ on:
       - 'df_patient_registration/**'
       - 'df_patient_odontogram/**'
       - 'df_dental_voice_temp/**'
+      - 'df_dental_voice_assistant/**'
       - '.github/workflows/deploy.yml'
 
 jobs:

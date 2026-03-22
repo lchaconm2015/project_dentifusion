@@ -1,0 +1,28 @@
+{
+    "name": "DF Dental Voice Assistant",
+    "version": "16.0.1.0.0",
+    "summary": "Capa de captura por voz y despacho hacia encuentro, odontograma, plan y procedimientos",
+    "category": "Healthcare",
+    "author": "LICSYST",
+    "website": "https://www.licsyst.com",
+    "license": "LGPL-3",
+    "depends": [
+        "mail",
+        "df_dental_procedure",
+        "df_dental_suite",
+    ],
+    "data": [
+        "security/dental_voice_security.xml",
+        "security/ir.model.access.csv",
+        "data/sequence.xml",
+        "views/dental_voice_session_views.xml",
+        "views/dental_voice_event_views.xml",
+        "views/dental_voice_command_rule_views.xml",
+        "views/res_company_views.xml",
+        "views/dental_encounter_views.xml",
+        "views/patient_odontogram_views.xml",
+        "views/dental_voice_menu.xml",
+    ],
+    "installable": True,
+    "application": False,
+}

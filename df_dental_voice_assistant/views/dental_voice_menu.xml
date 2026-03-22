@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_df_dental_voice_root"
+              name="Asistente de voz"
+              parent="df_dental_suite.menu_df_suite_clinical"
+              sequence="45"
+              groups="df_dental_encounter.group_df_dental_clinical_assistant"/>
+
+    <menuitem id="menu_df_dental_voice_session"
+              name="Sesiones de voz"
+              parent="menu_df_dental_voice_root"
+              action="action_df_dental_voice_session"
+              sequence="10"/>
+
+    <menuitem id="menu_df_dental_voice_event"
+              name="Eventos de voz"
+              parent="menu_df_dental_voice_root"
+              action="action_df_dental_voice_event"
+              sequence="20"/>
+
+    <menuitem id="menu_df_dental_voice_command_rule"
+              name="Reglas de comandos"
+              parent="menu_df_dental_voice_root"
+              action="action_df_dental_voice_command_rule"
+              sequence="30"
+              groups="df_dental_encounter.group_df_dental_clinical_manager"/>
+</odoo>

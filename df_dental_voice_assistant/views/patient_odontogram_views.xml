@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_df_patient_odontogram_form_inherit_voice" model="ir.ui.view">
+        <field name="name">df.patient.odontogram.form.inherit.voice</field>
+        <field name="model">df.patient.odontogram</field>
+        <field name="inherit_id" ref="df_patient_odontogram.view_df_patient_odontogram_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='notes']" position="after">
+                <field name="clinical_capture_source" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

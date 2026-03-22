@@ -114,7 +114,7 @@ class DentalAppointment(models.Model):
         required=True,
         tracking=True,
     )
-    # Tres columnas lógicas en Kanban (derivadas de state; no arrastrar entre columnas)
+    # Tres columnas en Kanban; al arrastrar se actualiza state vía _inverse_kanban_lane
     kanban_lane = fields.Selection(
         [
             ("new", "Nuevas"),
@@ -123,6 +123,7 @@ class DentalAppointment(models.Model):
         ],
         string="Etapa (Kanban)",
         compute="_compute_kanban_lane",
+        inverse="_inverse_kanban_lane",
         store=True,
         index=True,
     )
@@ -200,6 +201,75 @@ class DentalAppointment(models.Model):
                 rec.kanban_lane = "closed"
             else:
                 rec.kanban_lane = "confirmed"
+
+    def _kanban_lane_for_state(self, state):
+        if state == "draft":
+            return "new"
+        if state in ("done", "cancelled", "no_show"):
+            return "closed"
+        return "confirmed"
+
+    def _inverse_kanban_lane(self):
+        """Sincroniza state al arrastrar tarjetas entre columnas del Kanban."""
+        manager = "df_dental_appointment.group_df_dental_manager"
+        for rec in self:
+            lane = rec.kanban_lane
+            current_lane = rec._kanban_lane_for_state(rec.state)
+            if lane == current_lane:
+                continue
+            if lane == "new":
+                if rec.state == "draft":
+                    continue
+                if not rec.env.user.has_group(manager):
+                    raise UserError(
+                        _(
+                            "Solo un gestor dental puede mover la cita a «Nuevas» "
+                            "(volver a borrador)."
+                        )
+                    )
+                rec.write(
+                    {
+                        "state": "draft",
+                        "checkin_datetime": False,
+                        "checkout_datetime": False,
+                        "attendance_status": "pending",
+                    }
+                )
+            elif lane == "confirmed":
+                if rec.state in ("confirmed", "checked_in", "in_progress"):
+                    continue
+                if rec.state == "done" and not rec.env.user.has_group(manager):
+                    raise UserError(
+                        _(
+                            "Solo un gestor dental puede devolver una cita realizada "
+                            "a «Confirmadas»."
+                        )
+                    )
+                rec.write(
+                    {
+                        "state": "confirmed",
+                        "checkin_datetime": False,
+                        "checkout_datetime": False,
+                        "attendance_status": "pending",
+                    }
+                )
+            elif lane == "closed":
+                if rec.state in ("done", "cancelled", "no_show"):
+                    continue
+                # En curso o ya en recepción → cerrar como realizada
+                if rec.state in ("in_progress", "checked_in"):
+                    rec.write(
+                        {
+                            "state": "done",
+                            "checkout_datetime": fields.Datetime.now(),
+                            "attendance_status": "attended",
+                        }
+                    )
+                # Borrador o solo confirmada → interpretar como cancelación
+                elif rec.state in ("draft", "confirmed"):
+                    rec.write(
+                        {"state": "cancelled", "attendance_status": "cancelled"}
+                    )
 
     @api.onchange("patient_id")
     def _onchange_patient_id(self):
