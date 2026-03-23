@@ -62,9 +62,12 @@
                         </button>
                     </div>
 
-                    <group string="Nombre completo">
-                        <field name="display_name" readonly="1" nolabel="1" colspan="2"/>
-                    </group>
+                    <div class="oe_title mb-3">
+                        <label for="display_name" string="Nombre completo" class="d-block text-muted small mb-1"/>
+                        <h1 class="mb-0">
+                            <field name="display_name" readonly="1" nolabel="1"/>
+                        </h1>
+                    </div>
 
                     <group string="A. Datos del establecimiento y usuario / paciente">
                         <group>
