@@ -219,6 +219,7 @@
         <field name="model">df.patient.registration</field>
         <field name="arch" type="xml">
             <search>
+                <field name="identification" string="Cédula"/>
                 <field name="display_name"/>
                 <field name="first_name"/>
                 <field name="first_lastname"/>

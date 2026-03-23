@@ -26,7 +26,7 @@ class DfPatientRegistration(models.Model):
         max_width=1024,
         max_height=1024,
     )
-    identification = fields.Char(string="Cédula", tracking=True)
+    identification = fields.Char(string="Cédula", tracking=True, index=True)
     address = fields.Char(string="Dirección")
     phone = fields.Char(string="Teléfono", tracking=True)
     institution_system = fields.Char(string="Institución del sistema", tracking=True)
@@ -160,6 +160,25 @@ class DfPatientRegistration(models.Model):
                 rec.second_lastname or "",
             ]
             rec.display_name = " ".join([p for p in parts if p]).strip()
+
+    @api.model
+    def _name_search(self, name, args=None, operator="ilike", limit=100, order=None):
+        """Permite buscar por cédula (y unicódigo) en autocompletados Many2one."""
+        args = list(args or [])
+        if name:
+            domain = [
+                "|",
+                "|",
+                "|",
+                "|",
+                ("display_name", operator, name),
+                ("identification", operator, name),
+                ("first_name", operator, name),
+                ("first_lastname", operator, name),
+                ("unicodigo", operator, name),
+            ]
+            return super()._name_search("", domain + args, operator, limit, order=order)
+        return super()._name_search(name, args, operator, limit, order=order)
 
     # -------------------------------------------------------------------------
     # Sincronización con res.partner
