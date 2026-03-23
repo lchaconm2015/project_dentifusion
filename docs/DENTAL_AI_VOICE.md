@@ -1,5 +1,7 @@
 # Odontograma, IA y asistente de voz (Dentifusion)
 
+> Configuración inicial paso a paso del sistema: ver **`CONFIGURACION_INICIAL.md`** en esta misma carpeta `docs/`.
+
 ## Ideas para preparar el odontograma (`df_patient_odontogram`) hacia IA
 
 1. **Contrato de datos estable**  
