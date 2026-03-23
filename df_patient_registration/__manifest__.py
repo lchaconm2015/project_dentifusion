@@ -1,6 +1,6 @@
 {
     "name": "DF Patient Registration",
-    "version": "16.0.1.0.4",
+    "version": "16.0.1.0.5",
     "summary": "Registro de pacientes para clínica",
     "category": "Healthcare",
     "author": "LICSYST",

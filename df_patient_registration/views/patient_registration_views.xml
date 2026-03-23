@@ -69,22 +69,27 @@
                         </h1>
                     </div>
 
-                    <group string="A. Datos del establecimiento y usuario / paciente">
-                        <group>
-                            <field name="identification"/>
-                            <field name="phone"/>
-                            <field name="address"/>
-                            <field name="institution_system"/>
-                            <field name="unicodigo"/>
-                            <field name="unique_clinical_history_number"/>
-                        </group>
-                        <group string="Identificación del paciente">
+                    <group string="A. Datos del paciente y del establecimiento">
+                        <group string="Datos del paciente">
                             <field name="first_lastname"/>
                             <field name="second_lastname"/>
                             <field name="first_name"/>
                             <field name="second_name"/>
+                            <field name="identification"/>
                             <field name="sex"/>
                             <field name="age"/>
+                            <field name="age_condition"/>
+                            <field name="phone"/>
+                            <field name="address"/>
+                            <field name="patient_photo" widget="image"/>
+                        </group>
+                        <group string="Datos del establecimiento">
+                            <field name="health_establishment"/>
+                            <field name="institution_system"/>
+                            <field name="unicodigo"/>
+                            <field name="unique_clinical_history_number"/>
+                            <field name="file_number"/>
+                            <field name="sheet_number"/>
                         </group>
                     </group>
 
