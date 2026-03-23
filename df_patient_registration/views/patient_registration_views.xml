@@ -81,7 +81,7 @@
                             <field name="address"/>
                         </group>
                         <group string="Datos del establecimiento">
-                            <field name="health_establishment"/>
+                            <field name="health_establishment" invisible="1"/>
                             <field name="institution_system"/>
                             <field name="unicodigo"/>
                             <field name="unique_clinical_history_number"/>
