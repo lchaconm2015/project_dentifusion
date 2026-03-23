@@ -11,7 +11,6 @@
                 <field name="unicodigo"/>
                 <field name="sex"/>
                 <field name="age"/>
-                <field name="sheet_number"/>
             </tree>
         </field>
     </record>
@@ -78,18 +77,14 @@
                             <field name="identification"/>
                             <field name="sex"/>
                             <field name="age"/>
-                            <field name="age_condition"/>
                             <field name="phone"/>
                             <field name="address"/>
-                            <field name="patient_photo" widget="image"/>
                         </group>
                         <group string="Datos del establecimiento">
                             <field name="health_establishment"/>
                             <field name="institution_system"/>
                             <field name="unicodigo"/>
                             <field name="unique_clinical_history_number"/>
-                            <field name="file_number"/>
-                            <field name="sheet_number"/>
                         </group>
                     </group>
 
